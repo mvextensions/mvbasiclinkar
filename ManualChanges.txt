@@ -1,0 +1,11 @@
+XMLHttpRequest.js lin 502
+      // Start the other Node Process, executing this string
+      var syncProc;
+      try{
+        syncProc = spawn(process.argv[0], ["-e", execString]);
+      }
+      catch{
+        var execFile = "tmp-linkar-xmlhttprequest-sync";
+        fs.writeFileSync(execFile, execString, "utf8");
+        syncProc = spawn(process.argv[0], [execFile]);
+      }

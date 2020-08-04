@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  [%JQUERY%]
+
+  <style>
+    label {
+      margin-right: 10px;
+      width: 150px;
+      display: inline-block;
+    }
+
+    input,
+    textarea,
+    select,
+    select>option {
+      border-radius: 0;
+      background: var(--vscode-settings-textInputBackground);
+      border: 1px solid var(--vscode-input-border);
+      color: var(--vscode-settings-textInputForeground);
+      padding: 4px 8px
+    }
+
+    select {
+      padding: 4px 6px
+    }
+
+    .fullscreen-container {
+      display: flex;
+      width: 100%;
+      height: 100%
+    }
+
+    .capitalize {
+      text-transform: capitalize
+    }
+
+    .capitalize small {
+      margin-left: 10px;
+      text-transform: none
+    }
+
+    ::-webkit-input-placeholder {
+      color: rgba(0, 0, 0, .2);
+      text-transform: capitalize
+    }
+
+    .vscode-dark {
+      color: rgba(255, 255, 255, 0.856)
+    }
+
+    .vscode-dark ::-webkit-input-placeholder {
+      color: hsla(0, 0%, 100%, .2);
+      text-transform: capitalize
+    }
+
+    .btn,
+    .pointer,
+    button {
+      cursor: pointer
+    }
+
+    .btn,
+    button {
+      background: var(--vscode-button-background, var(--link-color));
+      padding: 4px 8px;
+      color: var(--vscode-button-foreground);
+      border: 1px solid var(--vscode-input-border);
+      text-transform: uppercase
+    }
+
+    .btn:disabled,
+    .btn[disabled],
+    button:disabled,
+    button[disabled] {
+      opacity: .3;
+      cursor: not-allowed
+    }
+
+    .backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: hsla(0, 0%, 100%, .5);
+      overflow: hidden;
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      align-content: center
+    }
+
+    .backdrop>* {
+      margin: auto
+    }
+
+    .backdrop .MuiCircularProgress-colorPrimary {
+      color: rgba(0, 0, 0, .5)
+    }
+
+    .loading {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: block
+    }
+
+    .loading .backdrop {
+      display: flex
+    }
+
+    .vscode-dark .loading .backdrop {
+      background: rgba(0, 0, 0, .5)
+    }
+
+    .vscode-dark .loading .backdrop .MuiCircularProgress-colorPrimary {
+      color: hsla(0, 0%, 100%, .5)
+    }
+
+    .blur {
+      transition: all .3s ease 0s
+    }
+
+    .blur.blur-active {
+      filter: blur(5px)
+    }
+
+    @keyframes load8 {
+      0% {
+        transform: rotate(0deg)
+      }
+
+      to {
+        transform: rotate(1turn)
+      }
+    }
+
+    .no-margin {
+      margin: 0 !important
+    }
+
+    .no-margin-top {
+      margin-top: 0 !important
+    }
+
+    .no-margin-bottom {
+      margin-bottom: 0 !important
+    }
+
+    .no-margin-left {
+      margin-left: 0 !important
+    }
+
+    .no-margin-right {
+      margin-right: 0 !important
+    }
+
+    .no-padding {
+      padding: 0 !important
+    }
+
+    .no-padding-top {
+      padding-top: 0 !important
+    }
+
+    .no-padding-bottom {
+      padding-bottom: 0 !important
+    }
+
+    .no-padding-left {
+      padding-left: 0 !important
+    }
+
+    .no-padding-right {
+      padding-right: 0 !important
+    }
+
+    .relative {
+      position: relative !important
+    }
+
+    .flex-full {
+      display: flex;
+      align-items: baseline
+    }
+
+    .flex-full>* {
+      flex-grow: 1
+    }
+
+    .filterCell {
+      padding: 0;
+      background: var(--vscode-input-background)
+    }
+
+    .filterCell .MuiInputBase-input::placeholder,
+    .filterCell>div>* {
+      color: var(--vscode-input-foreground) !important
+    }
+
+    .filterCell.active {
+      color: var(--vscode-input-placeholderForeground);
+      background: var(--vscode-inputOption-activeBackground)
+    }
+
+    /* MORE */
+
+    /* Create two unequal columns that floats next to each other */
+    .column {
+      float: left;
+    }
+
+    .left {
+      width: 25%;
+      min-width: 110px;
+    }
+
+    .right {
+      width: 75%;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    /*LINKS*/
+    a:link {
+      text-decoration: none;
+      color: var(--vscode-settings-textInputForeground);
+    }
+
+    a:visited {
+      text-decoration: none;
+      color: var(--vscode-settings-textInputForeground);
+    }
+
+    a:hover {
+      text-decoration: none;
+      color: var(--vscode-menubar-selectionForeground);
+      background-color: var(--vscode-menubar-selectionBackground);
+    }
+
+    a:active {
+      text-decoration: none;
+      color: var(--vscode-settings-textInputForeground);
+    }
+
+    .active {
+      color: var(--vscode-menubar-selectionForeground);
+      background-color: var(--vscode-menubar-selectionBackground);
+    }
+
+    /*----------*/
+
+    .dict-menu-item {
+      display: block;
+      line-height: 20px;
+    }
+
+    .detail {
+      margin-left: 10px;
+    }
+
+    .new {
+      color: var(--vscode-textLink-activeForeground) !important;
+    }
+
+    .delete {
+      background:
+        url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMCAzSDEySDEzVjRIMTJWMTNMMTEgMTRINEwzIDEzVjRIMlYzSDVWMkM1IDEuNzM0NzggNS4xMDUzMSAxLjQ4MDM4IDUuMjkyODUgMS4yOTI4NUM1LjQ4MDM4IDEuMTA1MzEgNS43MzQ3OCAxIDYgMUg5QzkuMjY1MjIgMSA5LjUxOTYyIDEuMTA1MzEgOS43MDcxNSAxLjI5Mjg1QzkuODk0NjkgMS40ODAzOCAxMCAxLjczNDc4IDEwIDJWM1pNOSAySDZWM0g5VjJaTTQgMTNIMTFWNEg0VjEzWk02IDVINVYxMkg2VjVaTTcgNUg4VjEySDdWNVpNOSA1SDEwVjEySDlWNVoiIGZpbGw9IiNDNUM1QzUiLz4KPC9zdmc+Cg==") no-repeat center center;
+      padding: 2px;
+      float: right;
+      background-color: firebrick;
+      width: 13px;
+      height: 15px;
+    }
+
+    /*DIALOG*/
+    /* Z-index of #mask must lower than #boxes .window */
+    #mask {
+      position: absolute;
+      z-index: 9000;
+      background-color: #000;
+      display: none;
+    }
+
+    #boxes .window {
+      position: fixed;
+      width: 440px;
+      display: none;
+      z-index: 9999;
+      padding: 10px;
+    }
+
+
+    /* Customize your modal window here, you can add background image too */
+    #boxes #dialog {
+      width: 375px;
+      border-color: var(--vscode-contrastBorder);
+      border-style: solid;
+      border-width: 1px;
+      background-color: var(--vscode-dropdown-background);
+    }
+
+    /*--------*/
+  </style>
+
+</head>
+
+<body>
+  <h2>[%TITLE%]
+    <div style="float:right;margin-bottom: 10px;">
+      <button onclick="GenerateEquate()" style="margin-right:20px;background-color: darkolivegreen;">Generate
+        Equate</button>
+      <button onclick="Cancel()" style="margin-right:20px;background-color:firebrick;">Discard Changes</button>
+      <button onclick="Send('save')">Save Changes</button>
+    </div>
+  </h2>
+  <div class="row">
+    <div class="column left">
+      <div
+        style="background-color: var(--vscode-statusBar-background);color:var(--vscode-statusBar-foreground); padding:3px">
+        <span>DICTIONARIES</span>
+        <span style="float:right;"><a href="#dialog" name="modal" title="New Dictionary">+</a></span>
+      </div>
+      <div style="max-height: 600px;overflow: auto;" id="menuDicts">
+        [%DICTS%]
+      </div>
+    </div>
+    <div class="column right" id="detailDicts">
+      [%DETAIL%]
+    </div>
+  </div>
+
+  <h2>
+    <div style="float:right;margin-bottom: 10px;">
+      <button onclick="GenerateEquate()" style="margin-right:20px;background-color:darkolivegreen;">Generate
+        Equate</button>
+      <button onclick="Cancel()" style="margin-right:20px;background-color:firebrick;">Discard Changes</button>
+      <button onclick="Send('save')">Save Changes</button>
+    </div>
+  </h2>
+
+  <div id="boxes">
+    <div id="dialog" class="window">
+      <div style="margin: 5px;">
+        <b>New Dictionary</b>
+      </div>
+
+      <div>
+        <div style="margin: 5px;">
+          <label>ID</label>
+          <input id="txtModalId" type="text" value="" />
+        </div>
+        <div id="modalType" style="margin: 5px;">
+          <label>[%TYPE_OPTIONS_LABEL%]</label>
+          <select id="txtModalType" type="text">
+            [%TYPE_OPTIONS%]
+          </select>
+
+        </div>
+      </div>
+
+      <div style="margin-top: 10px;">
+        <a href="#" class="close" style="float: left;"><button onclick="CancelDialog()"
+            style="background-color:firebrick;">Cancel</button></a>
+        <a href="#" class="close" style="float: right;"><button onclick="Create()">Create</button></a>
+      </div>
+    </div>
+
+    <div id="mask"></div>
+
+  </div>
+
+
+  <script>
+
+    var filedata;
+
+    $(document).ready(function () {
+
+      $('a[name=modal]').click(function (e) {
+        e.preventDefault();
+        var id = $(this).attr('href');
+
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+
+        $('#mask').css({ 'width': maskWidth, 'height': maskHeight });
+
+        $('#mask').fadeIn(1000);
+        $('#mask').fadeTo("slow", 0.8);
+
+        var winH = $(window).height();
+        var winW = $(window).width();
+
+        $(id).css('top', winH / 2 - $(id).height() / 2);
+        $(id).css('left', winW / 2 - $(id).width() / 2);
+
+        $(id).fadeIn(2000);
+      });
+
+      $('.window .close').click(function (e) {
+        e.preventDefault();
+        $('#mask, .window').hide();
+      });
+
+      $('#mask').click(function () {
+        $(this).hide();
+        $('.window').hide();
+      });
+
+    });
+
+    var vscode = acquireVsCodeApi();
+
+    window.addEventListener('message', event => {
+      try {
+        if (event.data.template) {
+          filedata = event.data.filedata;
+          $("#menuDicts").append(event.data.menu);
+          $("#detailDicts").append(event.data.template);
+          Navigate(event.data.select);
+        }
+        else {
+          filedata = event.data;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+
+    });
+
+    function Send(operation) {
+      if (filedata) {
+        GetPostData();
+
+        vscode.postMessage({
+          command: operation,
+          data: filedata
+        })
+      }
+    }
+
+    function Cancel() {
+      vscode.postMessage({
+        command: 'discard',
+        data: filedata
+      })
+    }
+
+    var deleting = false;
+    function Delete(id) {
+      deleting = true;
+      var i;
+      for (i = 0; i < filedata.items.length; i++) {
+        if (filedata.items[i].id == id) {
+          filedata.items[i].isdeleted = true;
+          var menutab = $("#menu-" + filedata.items[i].tabname);
+          menutab.hide();
+          var tab = $("#" + filedata.items[i].tabname);
+          tab.hide();
+        }
+      }
+    }
+
+    function GenerateEquate() {
+      if (filedata) {
+        GetPostData();
+
+        vscode.postMessage({
+          command: "equate",
+          data: filedata
+        })
+      }
+    }
+
+    function GetPostData() {
+      var i;
+      for (i = 0; i < filedata.items.length; i++) {
+        var pos = filedata.items[i].tabname.replace("tab", "");
+        var tab = $("#" + filedata.items[i].tabname);
+        var fields = tab.find(':input');
+        var values = [];
+        var j;
+        for (j = 0; j < fields.length; j++) {
+          var name = fields[j].getAttribute("name");
+          var value = fields[j].value;
+          var className = fields[j].className.match(/attnumber-\d+/);
+          var attnumber = className[0].replace("attnumber-", "");
+          values.push({ name: name, value: value, number: attnumber });
+        }
+        filedata.items[i].values = values;
+      }
+    }
+
+    function Navigate(tab) {
+      if (deleting)
+        deleting = false;
+      else {
+        $(".detail").hide();
+        $(".dict-menu-item").removeClass("active");
+        $("#" + tab).show();
+        $("#menu-" + tab).addClass("active");
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function CancelDialog() {
+      $("#txtModalId").val("");
+      $("#txtModalType").val($("#txtModalType option:first").val());
+    }
+
+    function Create() {
+      var modalId = $("#txtModalId").val();
+      var modalType = $("#txtModalType").val();
+      if (modalId && modalType) {
+        var createdata = { id: modalId, type: modalType, filedata: filedata };
+        vscode.postMessage({
+          command: 'create',
+          data: createdata
+        });
+      }
+      else {
+        vscode.postMessage({
+          command: 'showerror',
+          text: 'Datos Obligatorios'
+        })
+      }
+      $("#txtModalId").val("");
+      $("#txtModalType").val($("#txtModalType option:first").val());
+    }
+
+  </script>
+</body>
+
+</html>

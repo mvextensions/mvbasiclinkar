@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    label {
+      margin-right: 10px;
+      width: 175px;
+      display: inline-block;
+    }
+
+    input,
+    textarea,
+    select,
+    select>option {
+      border-radius: 0;
+      background: var(--vscode-settings-textInputBackground);
+      border: 1px solid var(--vscode-input-border);
+      color: var(--vscode-settings-textInputForeground);
+      padding: 4px 8px
+    }
+
+    select {
+      padding: 4px 6px
+    }
+
+    .fullscreen-container {
+      display: flex;
+      width: 100%;
+      height: 100%
+    }
+
+    .capitalize {
+      text-transform: capitalize
+    }
+
+    .capitalize small {
+      margin-left: 10px;
+      text-transform: none
+    }
+
+    ::-webkit-input-placeholder {
+      color: rgba(0, 0, 0, .2);
+      text-transform: capitalize
+    }
+
+    .vscode-dark {
+      color: rgba(255, 255, 255, 0.856)
+    }
+
+    .vscode-dark ::-webkit-input-placeholder {
+      color: hsla(0, 0%, 100%, .2);
+      text-transform: capitalize
+    }
+
+    .btn,
+    .pointer,
+    button {
+      cursor: pointer
+    }
+
+    .btn,
+    button {
+      background: var(--vscode-button-background, var(--link-color));
+      padding: 4px 8px;
+      color: var(--vscode-button-foreground);
+      border: 1px solid var(--vscode-input-border);
+      text-transform: uppercase
+    }
+
+    .btn:disabled,
+    .btn[disabled],
+    button:disabled,
+    button[disabled] {
+      opacity: .3;
+      cursor: not-allowed
+    }
+
+    .backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: hsla(0, 0%, 100%, .5);
+      overflow: hidden;
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      align-content: center
+    }
+
+    .backdrop>* {
+      margin: auto
+    }
+
+    .backdrop .MuiCircularProgress-colorPrimary {
+      color: rgba(0, 0, 0, .5)
+    }
+
+    .loading {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: block
+    }
+
+    .loading .backdrop {
+      display: flex
+    }
+
+    .vscode-dark .loading .backdrop {
+      background: rgba(0, 0, 0, .5)
+    }
+
+    .vscode-dark .loading .backdrop .MuiCircularProgress-colorPrimary {
+      color: hsla(0, 0%, 100%, .5)
+    }
+
+    .blur {
+      transition: all .3s ease 0s
+    }
+
+    .blur.blur-active {
+      filter: blur(5px)
+    }
+
+    @keyframes load8 {
+      0% {
+        transform: rotate(0deg)
+      }
+
+      to {
+        transform: rotate(1turn)
+      }
+    }
+
+    .no-margin {
+      margin: 0 !important
+    }
+
+    .no-margin-top {
+      margin-top: 0 !important
+    }
+
+    .no-margin-bottom {
+      margin-bottom: 0 !important
+    }
+
+    .no-margin-left {
+      margin-left: 0 !important
+    }
+
+    .no-margin-right {
+      margin-right: 0 !important
+    }
+
+    .no-padding {
+      padding: 0 !important
+    }
+
+    .no-padding-top {
+      padding-top: 0 !important
+    }
+
+    .no-padding-bottom {
+      padding-bottom: 0 !important
+    }
+
+    .no-padding-left {
+      padding-left: 0 !important
+    }
+
+    .no-padding-right {
+      padding-right: 0 !important
+    }
+
+    .relative {
+      position: relative !important
+    }
+
+    .flex-full {
+      display: flex;
+      align-items: baseline
+    }
+
+    .flex-full>* {
+      flex-grow: 1
+    }
+
+    .filterCell {
+      padding: 0;
+      background: var(--vscode-input-background)
+    }
+
+    .filterCell .MuiInputBase-input::placeholder,
+    .filterCell>div>* {
+      color: var(--vscode-input-foreground) !important
+    }
+
+    .filterCell.active {
+      color: var(--vscode-input-placeholderForeground);
+      background: var(--vscode-inputOption-activeBackground)
+    }
+  </style>
+</head>
+
+<body>
+  <h1>[%TITLE%]</h1>
+  <form>
+    <label title="The name you want for this connection">Name</label>
+    <input type="text" name="name" id="name"></input>
+    <br /><br />
+    <label title="Type of the database (D3, jBase, mvBASE, QM, Universe, Unidata)">Database</label>
+    <select name="database" id="database">
+      <option value="QM">QM</option>
+      <option value="jBASE">jBASE</option>
+      <option value="D3">D3</option>
+      <option value="mvBASE">mvBASE</option>
+      <option value="Universe">Universe</option>
+      <option value="Unidata">Unidata</option>
+    </select>
+    <br /><br />
+    <label title="URL of the Web Server of Linkar Suite where the Linkar REST API server is installed">Server</label>
+    <input type="text" name="server" id="server"></input>
+    <br /><br />
+    <label
+      title="TCP Port of the Web Server of Linkar Suite where the Linkar REST API server is installed (usually 11201)">Port</label>
+    <input type="number" name="port" id="port"></input>
+    <br /><br />
+    <label title="You must activate this if Linkar is using SSL">SSL</label>
+    <input type="checkbox" id="ssl" name="ssl">
+    <br /><br />
+    <label
+      title="The API key you are going to use to connect to the database. Refer to https://kosday.com/linkar-rest-api-how-to/to know how to create API Keys">API
+      Key</label>
+    <input type="text" name="apikey" id="apikey" style="width:300px"></input>
+    <br /><br />
+    <label
+      title="If this connection is going to be usedby a plugin, the Linkar plugin reference. Usually keep this empty">Plugin
+      Ref</label>
+    <input type="text" name="pluginref" id="pluginref"></input>
+    <br /><br />
+    <label
+      title="This is a free text field to send in the transaction. If not empty, subroutine SUB.LK.MAIN.CONTROL.CUSTOM will be called. Add custom code to that subroutine to define special behaviors for some or all transactions">Custom
+      Vars</label>
+    <input type="text" name="customvars" id="customvars"></input>
+    <br /><br />
+    <label
+      title="A free text that you can include to identified this connection in the Linkar Manageror to use it in the SUB.LK.MAIN.CONTROL.CUSTOM subroutine">Free
+      Text</label>
+    <input type="text" name="freetext" id="freetext"></input>
+    <br /><br />
+    <label
+      title="If you have defined languages in Linkar Schemas, the language code. The messages will appear in the selected language">Language</label>
+    <input type="text" name="language" id="language"></input>
+    <br /><br />
+    <label title="The Connection will be loaded when you start VS Code">Load automatically on start</label>
+    <input type="checkbox" id="autoconnect" name="autoconnect">
+    <!--<br /><br />-->
+    <label style="display:none"
+      title="If you activate this switch, only the program names (item Ids) of the files willbe loaded. The programs (the complete record) will be automatically loaded when necessary. This increase performance but has much more interaction between the LinkarREST API and the database. If not, the complete program list will be loaded. We recommend to activate this switch if your files have many programs for a better performance, or if you have many programmers working in the same file, for a better use of the optimistic locking mechanism">Load
+      only Itemids</label>
+    <input style="display:none" type="checkbox" id="ondemand" name="ondemand">
+    <br /><br />
+    <label
+      title="The program files you want to load in this connection. If you leave this empty, all the files from the account will be loaded. You must separate the files with  “|” (pipe). We recommend to define the files here in order to have better performance and more security, giving access to the programmers only to the files they need. Remember that you can add a new file when you want and just, reload the connection"
+      style="width: 100%;">Included Files (for example FILE1|FILE2, empty for all files)</label>
+    <textarea id="files" name="files" rows="4" style="width:90%;margin-top: 10px;"></textarea>
+    <br /><br />
+    <label
+      title="The maximum number of records per file allowed in download. This parameter is included as security against the possible existence of files with many records, which can slow down the load.">Max.
+      records per file</label>
+    <input type="number" name="maxItemsPerFile" id="maxItemsPerFile"></input>
+    <br /><br />
+    <label
+      title="The TCL command you use to compile your programs, usually BASIC or COMPILE but you can use your own if you have a precompiler in the database">BASIC
+      Command</label>
+    <input type="text" name="basiccmd" id="basiccmd"></input>
+    <br /><br />
+    <label
+      title='Arguments for the BASIC command. For instance, if you want to compile with flash basic in D3 you will put "(O"'>BASIC
+      Arguments</label>
+    <input type="text" name="basicarg" id="basicarg"></input>
+    <br /><br />
+    <label title="The TCL command you use for catalog programs in the database">CATALOG Command</label>
+    <input type="text" name="catalogcmd" id="catalogcmd"></input>
+    <br /><br />
+    <label title="Arguments for the TCL command, for instance LOCAL, GLOBAL, (G...">CATALOG Arguments</label>
+    <input type="text" name="catalogarg" id="catalogarg"></input>
+    <br /><br />
+    <label
+      title='OS command to start and emulator (Accuterm, Putty, Telnet, SSH...) in the machine where VS Code is running. Depending on the command you use it will run in a new Window or inside the VS Code terminal window. For instance ssh@mydatabaseip will start an SSH connection with the database inside the VS Code terminal window, telnet mydatabase 4242 will start a Telnet connection with a QM database inside the VC Code terminal, "C:\Program Files (x86)\atwin80\atwin80.exe" will start Accuterm in a new windows windows. All these connections will use a new database license when connected. If you want to use "telnet.exe" or "ssh.exe" in windows you must activate them (in W10 they came deactivated). Refer to https://social.technet.microsoft.com/wiki/contents/articles/910.windows-7-enabling-telnet-client.aspxor https://docs.microsoft.com/es-es/windows-server/administration/openssh/openssh_install_firstuse'
+      style="width: 100%;">Custom Terminal Emulation Command</label>
+    <input type="text" name="terminal" id="terminal" style="width:90%;margin-top: 10px;"></input>
+    <br /><br />
+    <button onclick="Cancel()" style="margin-right:20px;float:left; background-color:firebrick;">Cancel</button>
+    <div style="float:right">
+      <button onclick="Send('test')" style="margin-right:20px; background-color: darkolivegreen;">Test
+        Connection</button>
+      <button onclick="Send('save')">Save Connection</button>
+    </div>
+    <br /><br />
+    <br /><br />
+  </form>
+  <script>
+    var vscode = acquireVsCodeApi();
+
+    window.addEventListener('message', event => {
+      try {
+        var data = event.data;
+        document.getElementById('name').value = data.name;
+        document.getElementById('database').value = data.database;
+        document.getElementById('server').value = data.server;
+        document.getElementById('port').value = data.port;
+        document.getElementById('ssl').checked = data.ssl;
+        document.getElementById('apikey').value = data.apikey;
+        document.getElementById('pluginref').value = data.pluginref;
+        document.getElementById('customvars').value = data.customvars;
+        document.getElementById('freetext').value = data.freetext;
+        document.getElementById('language').value = data.language;
+        document.getElementById('autoconnect').checked = data.autoconnect;
+        document.getElementById('ondemand').checked = data.ondemand;
+        document.getElementById('files').value = data.files;
+        document.getElementById('basiccmd').value = data.basiccmd;
+        document.getElementById('basicarg').value = data.basicarg;
+        document.getElementById('catalogcmd').value = data.catalogcmd;
+        document.getElementById('catalogarg').value = data.catalogarg;
+        document.getElementById('terminal').value = data.terminal;
+        document.getElementById('maxItemsPerFile').value = data.maxItemsPerFile;
+      } catch (err) {
+        console.log(err);
+      }
+
+    });
+
+    function Send(operation) {
+      var postdata = new Object();
+      postdata.scheme = '';
+      postdata.name = document.getElementById('name').value;
+      var cmbdb = document.getElementById('database');
+      postdata.database = cmbdb.options[cmbdb.selectedIndex].value;
+      postdata.server = document.getElementById('server').value;
+      postdata.port = parseInt(document.getElementById('port').value);
+      postdata.ssl = document.getElementById('ssl').checked;
+      postdata.apikey = document.getElementById('apikey').value;
+      postdata.pluginref = document.getElementById('pluginref').value;
+      postdata.customvars = document.getElementById('customvars').value;
+      postdata.freetext = document.getElementById('freetext').value;
+      postdata.language = document.getElementById('language').value;
+      postdata.autoconnect = document.getElementById('autoconnect').checked;
+      postdata.ondemand = document.getElementById('ondemand').checked;
+      postdata.files = document.getElementById('files').value;
+      postdata.basiccmd = document.getElementById('basiccmd').value;
+      postdata.basicarg = document.getElementById('basicarg').value;
+      postdata.catalogcmd = document.getElementById('catalogcmd').value;
+      postdata.catalogarg = document.getElementById('catalogarg').value;
+      postdata.terminal = document.getElementById('terminal').value;
+      postdata.maxItemsPerFile = parseInt(document.getElementById('maxItemsPerFile').value);
+
+      vscode.postMessage({
+        command: operation,
+        connection: JSON.stringify(postdata)
+      })
+    }
+
+    function Cancel() {
+      vscode.postMessage({
+        command: 'exit',
+        text: ''
+      })
+    }
+  </script>
+</body>
+
+</html>

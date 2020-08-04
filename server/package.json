@@ -1,0 +1,17 @@
+{
+	"name": "mvbasiclinkar",
+	"displayName": "MV Basic Linkar",
+	"description": "Linkar Extension for MV databases to manage MV Basic programs and data files dictionaries",
+	"author": "Kosday Solutions",
+	"version": "1.0.0",
+	"license": "MIT",
+	"publisher": "kosdaysolutions",
+	"engines": {
+		"node": "*"
+	},
+	"dependencies": {
+		"vscode-languageserver": "^6.1.1",
+		"vscode-languageserver-textdocument": "^1.0.1"
+	},
+	"scripts": {}
+}

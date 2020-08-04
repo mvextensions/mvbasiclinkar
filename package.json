@@ -1,0 +1,653 @@
+{
+	"name": "mvbasiclinkar",
+	"displayName": "MV Basic Linkar",
+	"description": "Linkar Extension for MV databases to manage MV Basic programs and data files dictionaries",
+	"author": "Kosday Solutions",
+	"icon": "logo.png",
+	"version": "1.0.0",
+	"license": "MIT",
+	"publisher": "kosdaysolutions",
+	"categories": [
+		"Programming Languages",
+		"Linters",
+		"Snippets"
+	],
+	"keywords": [
+		"MultiValue",
+		"Pick",
+		"PickBASIC",
+		"D3",
+		"jBASE",
+		"MVBASIC",
+		"mvBase",
+		"OpenQM",
+		"UniData",
+		"UniVerse",
+		"Linkar"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mvextensions/mvbasiclinkar"
+	},
+	"engines": {
+		"vscode": "^1.43.0"
+	},
+	"activationEvents": [
+		"onLanguage:mvbasic",
+		"onView:fileExplorer"
+	],
+	"main": "./client/out/extension",
+	"contributes": {
+		"snippets": [
+			{
+				"language": "mvbasic",
+				"path": "./Syntaxes/snippets.json"
+			}
+		],
+		"languages": [
+			{
+				"id": "mvbasic",
+				"aliases": [
+					"MultiValue Basic",
+					"PickBASIC",
+					"Pick"
+				],
+				"extensions": [
+					".bas",
+					".b",
+					".",
+					""
+				],
+				"configuration": "./client/language-configuration.json"
+			}
+		],
+		"views": {
+			"explorer": [
+				{
+					"id": "fileExplorer",
+					"name": "Linkar"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "fileExplorer.openFile",
+				"title": "Open File"
+			},
+			{
+				"command": "fileExplorer.newConnection",
+				"title": "New Connection",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/add-connection.svg",
+					"dark": "client/resources/dark/add-connection.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.addNewConnection",
+				"title": "Add New Connection",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.editConnection",
+				"title": "Edit Connection",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/edit.svg",
+					"dark": "client/resources/dark/edit.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.deleteConnection",
+				"title": "Delete Connection",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/trash.svg",
+					"dark": "client/resources/dark/trash.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.loadConnection",
+				"title": "Load Connection",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/debug-start.svg",
+					"dark": "client/resources/dark/debug-start.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.unloadConnection",
+				"title": "Unload Connection",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/debug-stop.svg",
+					"dark": "client/resources/dark/debug-stop.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.executeTCLCmd",
+				"title": "Execute TCL Command",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/symbol-event.svg",
+					"dark": "client/resources/dark/symbol-event.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.sendTerminalCmd",
+				"title": "Open Custom Terminal",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/console.svg",
+					"dark": "client/resources/dark/console.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.newItem",
+				"title": "New Item",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/new-file.svg",
+					"dark": "client/resources/dark/new-file.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.refreshFile",
+				"title": "Refresh File",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/refresh.svg",
+					"dark": "client/resources/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.openItemList",
+				"title": "Open Saved List",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/folder-opened.svg",
+					"dark": "client/resources/dark/folder-opened.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.writeBasicProgram",
+				"title": "Write-BASIC Program",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.writeBasicCatalogProgram",
+				"title": "Write-BASIC-Catalog Program ",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.basicProgram",
+				"title": "BASIC Program",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.catalogProgram",
+				"title": "Catalog Program",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.deleteItem",
+				"title": "Delete Item",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/trash.svg",
+					"dark": "client/resources/dark/trash.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.renameItem",
+				"title": "Rename Item",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/rename.svg",
+					"dark": "client/resources/dark/rename.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.saveAsItem",
+				"title": "Save As Item",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/save-as.svg",
+					"dark": "client/resources/dark/save-as.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.insertValueMark",
+				"title": "Insert Value Mark (253)",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.insertSubvalueMark",
+				"title": "Insert SubValue Mark (252)",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.insertTextMark",
+				"title": "Insert Text Mark (251)",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.refreshTree",
+				"title": "Refresh Tree",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.searchInOtherFile",
+				"title": "Search in other File",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.editDicts",
+				"title": "Edit Dictionaries",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/book.svg",
+					"dark": "client/resources/dark/book.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.editDictsFrom",
+				"title": "Edit Dictionaries From...",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/book.svg",
+					"dark": "client/resources/dark/book.svg"
+				}
+			}
+		],
+		"keybindings": [
+			{
+				"command": "fileExplorer.basicProgram",
+				"key": "alt+A alt+B",
+				"mac": "cmd+A cmd+B",
+				"when": "editorTextFocus && editorLangId == mvbasic"
+			},
+			{
+				"command": "fileExplorer.catalogProgram",
+				"key": "alt+A alt+C",
+				"mac": "cmd+A cmd+C",
+				"when": "editorTextFocus && editorLangId == mvbasic"
+			},
+			{
+				"command": "fileExplorer.writeBasicProgram",
+				"key": "alt+S alt+B",
+				"mac": "cmd+S cmd+B",
+				"when": "editorTextFocus && editorLangId == mvbasic"
+			},
+			{
+				"command": "fileExplorer.writeBasicCatalogProgram",
+				"key": "alt+S alt+C",
+				"mac": "cmd+S cmd+C",
+				"when": "editorTextFocus && editorLangId == mvbasic"
+			},
+			{
+				"command": "fileExplorer.insertValueMark",
+				"key": "alt+A alt+V",
+				"mac": "cmd+A cmd+V",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "fileExplorer.insertSubvalueMark",
+				"key": "alt+A alt+S",
+				"mac": "cmd+A cmd+S",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "fileExplorer.insertTextMark",
+				"key": "alt+A alt+T",
+				"mac": "cmd+A cmd+T",
+				"when": "editorTextFocus"
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "fileExplorer.newConnection",
+					"when": "view == fileExplorer",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "fileExplorer.loadConnection",
+					"when": "view == fileExplorer&& viewItem == connection-load || viewItem == connection-unload",
+					"group": "inline@6"
+				},
+				{
+					"command": "fileExplorer.unloadConnection",
+					"when": "view == fileExplorer && viewItem == connection-load",
+					"group": "inline@5"
+				},
+				{
+					"command": "fileExplorer.editConnection",
+					"when": "view == fileExplorer && viewItem == connection-load || viewItem == connection-unload",
+					"group": "inline@4"
+				},
+				{
+					"command": "fileExplorer.deleteConnection",
+					"when": "view == fileExplorer && viewItem == connection-load || viewItem == connection-unload",
+					"group": "inline@3"
+				},
+				{
+					"command": "fileExplorer.executeTCLCmd",
+					"when": "view == fileExplorer && viewItem == connection-load || viewItem == connection-unload",
+					"group": "inline@1"
+				},
+				{
+					"command": "fileExplorer.sendTerminalCmd",
+					"when": "view == fileExplorer && viewItem == connection-load || viewItem == connection-unload",
+					"group": "inline@2"
+				},
+				{
+					"command": "fileExplorer.editDictsFrom",
+					"when": "view == fileExplorer && viewItem == connection-load || viewItem == connection-unload",
+					"group": "inline@1"
+				},
+				{
+					"command": "fileExplorer.refreshFile",
+					"when": "view == fileExplorer && viewItem == file",
+					"group": "inline@4"
+				},
+				{
+					"command": "fileExplorer.newItem",
+					"when": "view == fileExplorer && viewItem == file",
+					"group": "inline@3"
+				},
+				{
+					"command": "fileExplorer.openItemList",
+					"when": "view == fileExplorer && viewItem == file",
+					"group": "inline@2"
+				},
+				{
+					"command": "fileExplorer.editDicts",
+					"when": "view == fileExplorer && viewItem == file",
+					"group": "inline@1"
+				},
+				{
+					"command": "fileExplorer.basicProgram",
+					"when": "view == fileExplorer && viewItem == record",
+					"group": "lkrecordopts@1"
+				},
+				{
+					"command": "fileExplorer.catalogProgram",
+					"when": "view == fileExplorer && viewItem == record",
+					"group": "lkrecordopts@2"
+				},
+				{
+					"command": "fileExplorer.saveAsItem",
+					"when": "view == fileExplorer && viewItem == record",
+					"group": "inline@3"
+				},
+				{
+					"command": "fileExplorer.renameItem",
+					"when": "view == fileExplorer && viewItem == record",
+					"group": "inline@2"
+				},
+				{
+					"command": "fileExplorer.deleteItem",
+					"when": "view == fileExplorer && viewItem == record",
+					"group": "inline@1"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "fileExplorer.writeBasicProgram",
+					"group": "lkrecordopts@1",
+					"when": "editorLangId == mvbasic"
+				},
+				{
+					"command": "fileExplorer.writeBasicCatalogProgram",
+					"group": "lkrecordopts@2",
+					"when": "editorLangId == mvbasic"
+				},
+				{
+					"command": "fileExplorer.basicProgram",
+					"group": "lkrecordopts@3",
+					"when": "editorLangId == mvbasic"
+				},
+				{
+					"command": "fileExplorer.catalogProgram",
+					"group": "lkrecordopts@4",
+					"when": "editorLangId == mvbasic"
+				},
+				{
+					"command": "fileExplorer.saveAsItem",
+					"group": "lkrecordopts@5"
+				},
+				{
+					"command": "fileExplorer.deleteItem",
+					"group": "lkrecordopts@6"
+				},
+				{
+					"command": "fileExplorer.insertValueMark",
+					"group": "lkeditoropts@1"
+				},
+				{
+					"command": "fileExplorer.insertSubvalueMark",
+					"group": "lkeditoropts@2"
+				},
+				{
+					"command": "fileExplorer.insertTextMark",
+					"group": "lkeditoropts@3"
+				}
+			]
+		},
+		"grammars": [
+			{
+				"language": "mvbasic",
+				"scopeName": "source.mvbasic",
+				"path": "./Syntaxes/mvon.tmLanguage.json"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Linkar",
+			"properties": {
+				"Linkar.margin": {
+					"scope": "resource",
+					"type": "number",
+					"default": 5,
+					"description": "The number of characters to use as a margin when formatting."
+				},
+				"Linkar.customWords": {
+					"scope": "resource",
+					"type": "string",
+					"default": "()",
+					"description": "List of custom words to highlight in a specific color. e.g. (HELLO|WORLD)"
+				},
+				"Linkar.customWordColor": {
+					"scope": "resource",
+					"type": "string",
+					"default": "yellow",
+					"description": "The color to use when highlighting the custom words."
+				},
+				"Linkar.customWordPath": {
+					"scope": "resource",
+					"type": "string",
+					"description": "Path to a file that contains key value pairs for custom words"
+				},
+				"Linkar.indent": {
+					"scope": "resource",
+					"type": "number",
+					"default": 3,
+					"description": "The number of characters to use when indenting code blocks."
+				},
+				"Linkar.maxNumberOfProblems": {
+					"scope": "resource",
+					"type": "number",
+					"default": 100,
+					"description": "Controls the maximum number of problems produced by the server."
+				},
+				"Linkar.useCamelCase": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"description": "Use Camelcase for Intellisense keywords."
+				},
+				"Linkar.formattingEnabled": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"description": "Set to true to enable automatic code formatting on filesave."
+				},
+				"Linkar.ignoreGotoScope": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"description": "The linter will not highlight goto that jump into the middle of loops."
+				},
+				"Linkar.trace.server": {
+					"scope": "window",
+					"type": "string",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"default": "off",
+					"description": "Traces the communication between VSCode and the language server."
+				},
+				"Linkar.languageType": {
+					"scope": "resource",
+					"type": "string",
+					"default": "MVON",
+					"enum": [
+						"MVON",
+						"jBASE",
+						"UniVerse",
+						"OpenQM"
+					]
+				},
+				"linkar.connections": {
+					"type": "array",
+					"markdownDescription": "Connections list",
+					"default": [],
+					"items": {
+						"type": "object",
+						"properties": {
+							"scheme": {
+								"type": "string",
+								"description": "Scheme id"
+							},
+							"name": {
+								"type": "string",
+								"description": "Name",
+								"default": "New Connection"
+							},
+							"database": {
+								"type": "string",
+								"description": "Database",
+								"default": "QM"
+							},
+							"server": {
+								"type": "string",
+								"description": "Server address",
+								"default": "127.0.0.1"
+							},
+							"port": {
+								"type": "number",
+								"description": "Port for connection",
+								"default": "11201"
+							},
+							"ssl": {
+								"type": "boolean",
+								"description": "Use SSL",
+								"required": false,
+								"default": false
+							},
+							"apikey": {
+								"type": "string",
+								"description": "API Key"
+							},
+							"pluginref": {
+								"type": "string",
+								"description": "Plugin Ref"
+							},
+							"customvars": {
+								"type": "string",
+								"description": "Custom Vars"
+							},
+							"freetext": {
+								"type": "string",
+								"description": "Free Text"
+							},
+							"language": {
+								"type": "string",
+								"description": "Language"
+							},
+							"autoconnect": {
+								"type": "boolean",
+								"description": "Load automatically when start",
+								"required": false,
+								"default": false
+							},
+							"ondemand": {
+								"type": "boolean",
+								"description": "Load only Itemids",
+								"required": false,
+								"default": true
+							},
+							"files": {
+								"type": "string",
+								"description": "Included Files (for example FILE1|FILE2, empty for all files)"
+							},
+							"maxItemsPerFile": {
+								"type": "number",
+								"description": "Max. records per file",
+								"default": "5000"
+							},
+							"basiccmd": {
+								"type": "string",
+								"description": "BASIC Command",
+								"default": "BASIC"
+							},
+							"basicarg": {
+								"type": "string",
+								"description": "BASIC Arguments",
+								"default": ""
+							},
+							"catalogcmd": {
+								"type": "string",
+								"description": "CATALOG Command",
+								"default": "CATALOG"
+							},
+							"catalogarg": {
+								"type": "string",
+								"description": "CATALOG Arguments",
+								"default": "LOCAL"
+							},
+							"terminal": {
+								"type": "string",
+								"description": "Custom Terminal Emulation Command",
+								"default": ""
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -b",
+		"watch": "tsc -b -w",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+		"test": "sh ./scripts/e2e.sh"
+	},
+	"devDependencies": {
+		"@types/mocha": "^5.2.7",
+		"mocha": "^6.2.2",
+		"@types/node": "^12.12.0",
+		"eslint": "^6.4.0",
+		"@typescript-eslint/parser": "^2.3.0",
+		"typescript": "^3.9.4"
+	},
+	"dependencies": {
+		"xmlhttprequest": "^1.8.0"
+	}
+}
