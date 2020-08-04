@@ -129,6 +129,8 @@ You can create as many connections as you need. MV Basic Linkar extension allows
 
 **Included files**: The program files you want to load in this connection. If you leave this empty, all the files from the account will be loaded. You must separate the files with "|" (pipe). We recommend specifying the files here in order to have better performance and more security, only giving programmers access to the files they need. You can change the file list at any time, and just reload the connection.
 
+**Max. records per file**: The maximum number of records per file allowed in download. This parameter is included as security against the possible existence of files with many records, which can slow down the load.
+
 **BASIC command**: The TCL command you use to compile your programs, usually BASIC or COMPILE but you can use your own if you have a precompiler in the database.
 
 **BASIC arguments**: Arguments for the BASIC command. For instance, if you want to compile with Flash BASIC in D3 you will put "(O".
