@@ -1,46 +1,10 @@
-# MV Basic Linkar
+# MV Basic Linkar VS Code Extension
 
 <p align="center">
   <img height="200" src="https://www.kosday.com/vscodeimages/linkar.png" alt="MV Basic Linkar" title="MV Basic Linkar">
 </p>
 
-### [Licence](https://kosday.com/terms/) Copyright (c) 2020 Kosday Solutions
-
-MIT License Permission is here by granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-All other trademarks and service marks are property of their respective holders.
-
-This extension uses code created in the MVBasic VSCode Extension:
-
-MV Basic Linkar includes code of the MvBasic Language module. It includes colors, intellisense, peek, references, etc.
-
-Actually MV Basic Linkar has included the original code, so you do not need to install the MVBasic extension.
-
-https://marketplace.visualstudio.com/items?itemName=mvextensions.mvbasic
-
-https://github.com/mvextensions/mvbasic/blob/master/doc/Extension%20Guide.md#visual-studio-code-multivalue-extension
-
-<p align="center">
-  <img height="200" src="https://www.kosday.com/vscodeimages/mvbasic.png" alt="MV BASIC" title="MV BASIC">
-</p>
-
-### [Licence](https://github.com/mvextensions/mvbasic/blob/master/License.txt) Copyright (c) 2019 MVExtensions Group
-
-MIT License Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
-OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-All other trademarks and service marks are property of their respective holders
+This [Visual Studio Code](https://code.visualstudio.com/) extension is used for syntax highlighting, IntelliSense and program formating for PickBasic code development. We hope this project sparks a sense of community involvement and action within the MultiValue and Pick Database space and if that is exciting to you, we'd love to have you help out! Please see our [Contribution Guidelines](https://github.com/mvextensions/.github/blob/master/CONTRIBUTING.md) and [Code of Conduct](https://github.com/mvextensions/.github/blob/master/CODE_OF_CONDUCT.md) for more information.
 
 ## Purpose of this guide
 
@@ -347,5 +311,26 @@ Pressing Ctl+Space after the words *GOTO*, *GOSUB* or *GO TO*, will allow you to
 | ALT+A + ALT+B | Compile the code record |
 | ALT+A + ALT+C | Catalog the code record      |
 
+## Licence
+
+### [Licence](https://kosday.com/terms/) Copyright (c) 2020 MVExtensions Group
+
+MIT License Permission is here by granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+All other trademarks and service marks are property of their respective holders.
+
+This extension uses code created in the MVBasic VSCode Extension:
+
+MV Basic Linkar includes code of the MvBasic Language module. It includes colors, intellisense, peek, references, etc.
+
+Actually MV Basic Linkar has included the original code, so you do not need to install the MVBasic extension.
+
+https://marketplace.visualstudio.com/items?itemName=mvextensions.mvbasic
+
+https://github.com/mvextensions/mvbasic/blob/master/doc/Extension%20Guide.md#visual-studio-code-multivalue-extension
 
 
