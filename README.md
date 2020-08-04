@@ -1,5 +1,9 @@
 # MV Basic Linkar VS Code Extension
 
+[![Badge for version for Visual Studio Code extension KosdaySolutions.mvbasiclinkar](https://vsmarketplacebadge.apphb.com/version/KosdaySolutions.mvbasiclinkar.svg)](https://marketplace.visualstudio.com/items?itemName=KosdaySolutions.mvbasiclinkar) [![Badge for installs for Visual Studio Code extension KosdaySolutions.mvbasiclinkar](https://vsmarketplacebadge.apphb.com/installs/KosdaySolutions.mvbasiclinkar.svg)](https://marketplace.visualstudio.com/items?itemName=KosdaySolutions.mvbasiclinkar)
+
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 <p align="center">
   <img height="200" src="https://www.kosday.com/vscodeimages/linkar.png" alt="MV Basic Linkar" title="MV Basic Linkar">
 </p>
@@ -91,7 +95,7 @@ VS Code can be downloaded from the following link: https://code.visualstudio.com
 
 ## 4. Installing MV Basic Linkar extension
 
-The easiest way to use this extension is to download it from the Visual Studio Code Marketplace. Please be aware that VS Code may require a reload after installation or updating.
+The easiest way to use this extension is to download it from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=KosdaySolutions.mvbasiclinkar). Please be aware that VS Code may require a reload after installation or updating.
 
 Start VS Code and select the Extensions Button. In the search box, type "linkar".
 
