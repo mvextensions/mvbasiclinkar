@@ -21,15 +21,15 @@ This document describes how to install and use the MV Basic Linkar extension in 
 
 - [Purpose of this guide](#Purpose-of-this-guide)
 - [Content table](#Content-table)
-- [1. Introduction](#1.-Introduction)
-- [2. Prerequisites](#2.-Prerequisites)
-- [3. Installing VS Code](#3.-Installing-VS-Code)
-- [4. Installing MV Basic Linkar extension](#4.-Installing-MV-Basic-Linkar-extension)
-- [5. Creating connections](#5.-Creating-connections)
-- [6. Using connections](#6.-Using-connections)
-- [7. Working with file dictionaries](#7.-Working-with-file-dictionaries)
-- [8. MV Developer Features](#8.-MV-Developer-Features)
-- [9. MV Basic Linkar Shortcut keys](#9.-MV-Basic-Linkar-Shortcut-keys)
+- [1. Introduction](#1.-introduction)
+- [2. Prerequisites](#2.-prerequisites)
+- [3. Installing VS Code](#3.-installing-vs-code)
+- [4. Installing MV Basic Linkar extension](#4.-installing-mv-basic-linkar-extension)
+- [5. Creating connections](#5.-creating-connections)
+- [6. Using connections](#6.-using-connections)
+- [7. Working with file dictionaries](#7.-working-with-file-dictionaries)
+- [8. MV Developer Features](#8.-mv-developer-features)
+- [9. MV Basic Linkar Shortcut keys](#9.-mv-basic-linkar-shortcut-keys)
 
 ## 1. Introduction
 
