@@ -3,7 +3,7 @@
 	"displayName": "MV Basic Linkar",
 	"description": "Linkar Extension for MV databases to manage MV Basic programs and data files dictionaries",
 	"author": "Kosday Solutions",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "MIT",
 	"publisher": "kosdaysolutions",
 	"engines": {
