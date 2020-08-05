@@ -435,6 +435,108 @@
 					"command": "fileExplorer.insertTextMark",
 					"group": "lkeditoropts@3"
 				}
+			],
+			"commandPalette": [
+				{
+					"command": "fileExplorer.openFile",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.newConnection"
+				},
+				{
+					"command": "fileExplorer.addNewConnection",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.editConnection",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.deleteConnection",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.loadConnection",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.unloadConnection",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.executeTCLCmd",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.sendTerminalCmd",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.newItem",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.refreshFile",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.openItemList",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.writeBasicProgram",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.writeBasicCatalogProgram",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.basicProgram",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.catalogProgram",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.deleteItem",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.renameItem",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.saveAsItem",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.insertValueMark"
+				},
+				{
+					"command": "fileExplorer.insertSubvalueMark"
+				},
+				{
+					"command": "fileExplorer.insertTextMark"
+				},
+				{
+					"command": "fileExplorer.refreshTree",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.searchInOtherFile",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.editDicts",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.editDictsFrom",
+					"when": "false"
+				}
 			]
 		},
 		"grammars": [

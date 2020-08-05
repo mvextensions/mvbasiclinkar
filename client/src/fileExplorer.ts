@@ -596,13 +596,16 @@ export class FileExplorer {
 			}
 		}));
 		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.insertValueMark', async () => {
-			vscode.window.activeTextEditor.insertSnippet(new vscode.SnippetString(String.fromCharCode(253)));
+			if (vscode.window.activeTextEditor)
+				vscode.window.activeTextEditor.insertSnippet(new vscode.SnippetString(String.fromCharCode(253)));
 		}));
 		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.insertSubvalueMark', async () => {
-			vscode.window.activeTextEditor.insertSnippet(new vscode.SnippetString(String.fromCharCode(252)));
+			if (vscode.window.activeTextEditor)
+				vscode.window.activeTextEditor.insertSnippet(new vscode.SnippetString(String.fromCharCode(252)));
 		}));
 		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.insertTextMark', async () => {
-			vscode.window.activeTextEditor.insertSnippet(new vscode.SnippetString(String.fromCharCode(251)));
+			if (vscode.window.activeTextEditor)
+				vscode.window.activeTextEditor.insertSnippet(new vscode.SnippetString(String.fromCharCode(251)));
 		}));
 
 		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.searchInOtherFile', async (uri: vscode.Uri) => {

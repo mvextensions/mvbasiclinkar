@@ -1,6 +1,6 @@
 # MV Basic Linkar VS Code Extension
 
-[![Badge for version for Visual Studio Code extension KosdaySolutions.mvbasiclinkar](https://vsmarketplacebadge.apphb.com/version/KosdaySolutions.mvbasiclinkar.svg)](https://marketplace.visualstudio.com/items?itemName=KosdaySolutions.mvbasiclinkar) [![Badge for installs for Visual Studio Code extension KosdaySolutions.mvbasiclinkar](https://vsmarketplacebadge.apphb.com/installs/KosdaySolutions.mvbasiclinkar.svg)](https://marketplace.visualstudio.com/items?itemName=KosdaySolutions.mvbasiclinkar)
+[![Badge for version for Visual Studio Code extension KosdaySolutions.mvbasiclinkar](https://vsmarketplacebadge.apphb.com/version/KosdaySolutions.mvbasiclinkar.svg)](https://marketplace.visualstudio.com/items?itemName=KosdaySolutions.mvbasiclinkar)
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
