@@ -44,7 +44,7 @@ The MV Basic Linkar extension provides developers to gain the features of VS Cod
 The network architecture MV Basic Linkar needs to work is:
 
 <p align="center">
-  <img src="https://www.kosday.com/vscodeimages/001.jpg" alt="MV Basic Linkar architecture" title="MV Basic Linkar architecture">
+  <img src="https://www.kosday.com/vscodeimages/mvbasiclinkar_architecture.jpg" alt="MV Basic Linkar architecture" title="MV Basic Linkar architecture">
 </p>
 
 This extension includes the following features:
