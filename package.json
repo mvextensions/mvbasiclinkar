@@ -4,7 +4,7 @@
 	"description": "Linkar Extension for MV databases to manage MV Basic programs and data files dictionaries",
 	"author": "Kosday Solutions",
 	"icon": "logo.png",
-	"version": "1.0.1",
+	"version": "1.0.3",
 	"license": "MIT",
 	"publisher": "kosdaysolutions",
 	"categories": [
@@ -23,6 +23,7 @@
 		"OpenQM",
 		"UniData",
 		"UniVerse",
+		"Reality",
 		"Linkar"
 	],
 	"repository": {
@@ -86,6 +87,29 @@
 			{
 				"command": "fileExplorer.addNewConnection",
 				"title": "Add New Connection",
+				"category": "Linkar"
+			},
+			{
+				"command": "fileExplorer.searchFiles",
+				"title": "Search Items",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/search.svg",
+					"dark": "client/resources/dark/search.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.recentFiles",
+				"title": "View Recent Opened Items",
+				"category": "Linkar",
+				"icon": {
+					"light": "client/resources/light/history.svg",
+					"dark": "client/resources/dark/history.svg"
+				}
+			},
+			{
+				"command": "fileExplorer.clearHistory",
+				"title": "Clear History",
 				"category": "Linkar"
 			},
 			{
@@ -302,12 +326,37 @@
 				"key": "alt+A alt+T",
 				"mac": "cmd+A cmd+T",
 				"when": "editorTextFocus"
+			},
+			{
+				"command": "fileExplorer.searchFiles",
+				"key": "alt+A alt+F",
+				"mac": "cmd+A cmd+F"
+			},
+			{
+				"command": "fileExplorer.recentFiles",
+				"key": "alt+A alt+H",
+				"mac": "cmd+A cmd+H"
+			},
+			{
+				"command": "fileExplorer.clearHistory",
+				"key": "alt+A alt+D",
+				"mac": "cmd+A cmd+D"
 			}
 		],
 		"menus": {
 			"view/title": [
 				{
 					"command": "fileExplorer.newConnection",
+					"when": "view == fileExplorer",
+					"group": "navigation"
+				},
+				{
+					"command": "fileExplorer.searchFiles",
+					"when": "view == fileExplorer",
+					"group": "navigation"
+				},
+				{
+					"command": "fileExplorer.recentFiles",
 					"when": "view == fileExplorer",
 					"group": "navigation"
 				}
@@ -730,6 +779,11 @@
 							}
 						}
 					}
+				},
+				"linkar.history": {
+					"type": "array",
+					"markdownDescription": "Recent Files",
+					"default": []
 				}
 			}
 		}

@@ -64,6 +64,7 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
 
         this.connection = Connection.Clone(conn);
 
+
         vscode.workspace.onDidOpenTextDocument(event => {
             if (event.uri.scheme == this.connection.scheme) {
                 let entry = this._lookup(event.uri, false);
@@ -71,6 +72,21 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                     if (event.languageId != "mvbasic" && event.languageId == "plaintext")
                         vscode.languages.setTextDocumentLanguage(event, "mvbasic");
                 }
+                
+                var confs = vscode.workspace.getConfiguration();
+                var conf = confs.get('linkar.history') as string[];
+                var path = event.uri.scheme + ":" + event.uri.path;
+                if (conf.length > 49)
+                    conf.pop();
+                if (conf.includes(path))
+                {
+                    conf.sort(function(x,y){ return x == path ? -1 : y == path ? 1 : 0; });
+                }
+                else
+                {
+                    conf.unshift(path);
+                }                
+                confs.update("linkar.history", conf, vscode.ConfigurationTarget.Global);
             }
             return event;
         });
@@ -86,6 +102,9 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                 break;
             case "jBASE":
                 selectClause = "WITH *A0 # \"$]\"";
+                break;
+            case "Reality":
+                selectClause = "WITH A0 # \"$]\"";
                 break;
         }
         var filePagination = "False";
@@ -184,6 +203,11 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                         mainFileName = "";
                         mainSelectClause = "";
                         mainSortClause = "";
+                        break;
+                    case "Reality":
+                        mainFileName = "MD";
+                        mainSelectClause = "WITH A1 = \"D]\"";
+                        mainSortClause = "BY A1 BY A0";
                         break;
                 }
                 var dataDBSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "True", FILE_NAME: mainFileName, SELECT_CLAUSE: mainSelectClause, SORT_CLAUSE: mainSortClause, DICT_CLAUSE: "", PRESELECT_CLAUSE: "" };

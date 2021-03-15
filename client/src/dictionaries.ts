@@ -1,9 +1,10 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { Utilities } from './Utilities';
+import { MyQuickPickItem, Utilities } from './Utilities';
 import { LkData } from './lkdata';
 import { Connection } from './connection';
+import { LkFileSystemProvider } from './lkSystemProvider';
 
 export class DictQM_D {
     pos: string;
@@ -2291,6 +2292,193 @@ export class DictJB_A_S_X {
     }
 }
 
+export class DictRT_A_S {
+    pos: string;
+    database: string;
+    dictionaryCode: string;
+
+    attributeMarkCount: string;
+    columnHeadingText: string;
+    reserved1: string;
+    reserved2: string;
+    reserved3: string;
+    outputConversion: string;
+    correlative: string;
+    attributeType: string;
+    columnWidth: string;
+    reserved4: string;
+    reserved5: string;
+    reserved6: string;
+    reserved7: string;
+    reserved8: string;
+    reserved9: string;
+    reserved10: string;
+    reserved11: string;
+    reserved12: string;
+    reserved13: string;
+
+
+    constructor(pos?: string, record?: string, type?: string) {
+        this.database = "Reality";
+        if (pos && record) {
+            this.pos = pos;
+            var lstatts = record.split("\xFE");
+            this.dictionaryCode = DictionariesForm.SetField(lstatts[0]);
+
+            this.attributeMarkCount = DictionariesForm.SetField(lstatts[1]);
+            this.columnHeadingText = DictionariesForm.SetField(lstatts[2]);
+            this.reserved1 = DictionariesForm.SetField(lstatts[3]);
+            this.reserved2 = DictionariesForm.SetField(lstatts[4]);
+            this.reserved3 = DictionariesForm.SetField(lstatts[5]);
+            this.outputConversion = DictionariesForm.SetField(lstatts[6]);
+            this.correlative = DictionariesForm.SetField(lstatts[7]);
+            this.attributeType = DictionariesForm.SetField(lstatts[8]);
+            this.columnWidth = DictionariesForm.SetField(lstatts[9]);
+            this.reserved4 = DictionariesForm.SetField(lstatts[10]);
+            this.reserved5 = DictionariesForm.SetField(lstatts[11]);
+            this.reserved6 = DictionariesForm.SetField(lstatts[12]);
+            this.reserved7 = DictionariesForm.SetField(lstatts[13]);
+            this.reserved8 = DictionariesForm.SetField(lstatts[14]);
+            this.reserved9 = DictionariesForm.SetField(lstatts[15]);
+            this.reserved10 = DictionariesForm.SetField(lstatts[16]);
+            this.reserved11 = DictionariesForm.SetField(lstatts[17]);
+            this.reserved12 = DictionariesForm.SetField(lstatts[18]);
+            this.reserved13 = DictionariesForm.SetField(lstatts[1]);
+        }
+        else if (pos) {
+            this.pos = pos;
+            this.dictionaryCode = type;
+
+            this.attributeMarkCount = "";
+            this.columnHeadingText = "";
+            this.reserved1 = "";
+            this.reserved2 = "";
+            this.reserved3 = "";
+            this.outputConversion = "";
+            this.correlative = "";
+            this.attributeType = "";
+            this.columnWidth = "";
+            this.reserved4 = "";
+            this.reserved5 = "";
+            this.reserved6 = "";
+            this.reserved7 = "";
+            this.reserved8 = "";
+            this.reserved9 = "";
+            this.reserved10 = "";
+            this.reserved11 = "";
+            this.reserved12 = "";
+            this.reserved13 = "";
+        }
+    }
+
+    public ToRecord(): string {
+        return this.dictionaryCode + "\xFE" +
+            this.attributeMarkCount + "\xFE" +
+            this.columnHeadingText + "\xFE" +
+            this.reserved1 + "\xFE" +
+            this.reserved2 + "\xFE" +
+            this.reserved3 + "\xFE" +
+            this.outputConversion + "\xFE" +
+            this.correlative + "\xFE" +
+            this.attributeType + "\xFE" +
+            this.columnWidth + "\xFE" +
+            this.reserved4 + "\xFE" +
+            this.reserved5 + "\xFE" +
+            this.reserved6 + "\xFE" +
+            this.reserved7 + "\xFE" +
+            this.reserved8 + "\xFE" +
+            this.reserved9 + "\xFE" +
+            this.reserved10 + "\xFE" +
+            this.reserved11 + "\xFE" +
+            this.reserved12 + "\xFE" +
+            this.reserved13;
+    }
+
+    public static FromValues(pos: number, values: any) {
+        var dict = new DictRT_A_S();
+        dict.pos = pos.toString();
+        dict.database = "Reality";
+        dict.dictionaryCode = "A";
+        var i;
+        for (i = 0; i < values.length; i++) {
+            if (values[i].name == (dict.pos + "dictionaryCode"))
+                dict.dictionaryCode = values[i].value;
+            if (values[i].name == (dict.pos + "attributeMarkCount"))
+                dict.attributeMarkCount = values[i].value;
+            if (values[i].name == (dict.pos + "columnHeadingText"))
+                dict.columnHeadingText = values[i].value.split("\n").join(String.fromCharCode(253));
+            if (values[i].name == (dict.pos + "reserved1"))
+                dict.reserved1 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved2"))
+                dict.reserved2 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved3"))
+                dict.reserved3 = values[i].value;
+            if (values[i].name == (dict.pos + "outputConversion"))
+                dict.outputConversion = values[i].value.split("\n").join(String.fromCharCode(253));
+            if (values[i].name == (dict.pos + "correlative"))
+                dict.correlative = values[i].value.split("\n").join(String.fromCharCode(253));
+            if (values[i].name == (dict.pos + "attributeType"))
+                dict.attributeType = values[i].value;
+            if (values[i].name == (dict.pos + "columnWidth"))
+                dict.columnWidth = values[i].value;
+            if (values[i].name == (dict.pos + "reserved4"))
+                dict.reserved4 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved5"))
+                dict.reserved5 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved6"))
+                dict.reserved6 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved7"))
+                dict.reserved7 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved8"))
+                dict.reserved8 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved9"))
+                dict.reserved9 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved10"))
+                dict.reserved10 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved11"))
+                dict.reserved11 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved12"))
+                dict.reserved12 = values[i].value;
+            if (values[i].name == (dict.pos + "reserved13"))
+                dict.reserved13 = values[i].value;
+        }
+        return dict;
+    }
+
+    public GetTemplate(id: string, active: boolean): string {
+        var frm = "<div class=\"detail ";
+        if (active)
+            frm += "tab-active";
+        frm += "\" id=\"tab" + this.pos + "\"";
+        if (!active)
+            frm += " style=\"display:none\"";
+        frm += " >";
+        frm += DictionariesForm.getIdTemplate(id);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "dictionaryCode", "1", "Dictionary-Code", this.dictionaryCode, "M", true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "attributeMarkCount", "2", "Attribute-Mark-Count", this.attributeMarkCount);
+        frm += DictionariesForm.getTextAreaTemplate(this.pos + "columnHeadingText", "3", "Column-Heading-Text", this.columnHeadingText, true);        
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved1", "4", "Reserved", this.reserved1, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved2", "5", "Reserved", this.reserved2, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved3", "6", "Reserved", this.reserved3, "M", true, true);
+        frm += DictionariesForm.getTextAreaTemplate(this.pos + "outputConversion", "7", "Output-Conversion", this.outputConversion, true);
+        frm += DictionariesForm.getTextAreaTemplate(this.pos + "correlative", "8", "Correlative", this.correlative, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "attributeType", "9", "Attribute-Type", this.attributeType);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "columnWidth", "10", "Column-Width", this.columnWidth, "L");
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved4", "11", "Reserved", this.reserved4, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved5", "12", "Reserved", this.reserved5, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved6", "13", "Reserved", this.reserved6, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved7", "14", "Reserved", this.reserved7, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved8", "15", "Reserved", this.reserved8, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved9", "16", "Reserved", this.reserved9, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved10", "17", "Reserved", this.reserved10, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved11", "18", "Reserved", this.reserved11, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved12", "19", "Reserved", this.reserved12, "M", true, true);
+        frm += DictionariesForm.getFieldTemplate(this.pos + "reserved13", "20", "Reserved", this.reserved13, "M", true, true);
+        frm += "</div>";
+        return frm;
+    }
+}
+
 export class DictionariesForm {
 
     constructor(private mainContext: vscode.ExtensionContext, private connection: Connection) {
@@ -2439,6 +2627,14 @@ export class DictionariesForm {
                                 else
                                     validType = false;
                                 break;
+                            case "Reality":
+                                    if (lstrecords[i].toUpperCase().startsWith("A") || lstrecords[i].toUpperCase().startsWith("S")) {
+                                        var dictRT = new DictRT_A_S(i.toString(), lstrecords[i]);
+                                        detailsTemplate += dictRT.GetTemplate(lstids[i], i == 0);
+                                    }
+                                    else
+                                        validType = false;
+                                    break;
                             default:
                                 validType = false;
                                 break;
@@ -2516,6 +2712,11 @@ export class DictionariesForm {
                 typeOptions += "<option value=\"A\">A</option>";
                 typeOptions += "<option value=\"S\">S</option>";
                 typeOptions += "<option value=\"X\">X</option>";
+                break;
+            case "Reality":
+                typeOptionsLabel = "Dictionary-Code";
+                typeOptions += "<option value=\"A\" selected>A</option>";
+                typeOptions += "<option value=\"S\">S</option>";
                 break;
         }
         str = str.replace("[%TYPE_OPTIONS_LABEL%]", typeOptionsLabel);
@@ -2676,6 +2877,14 @@ export class DictionariesForm {
                                     else
                                         validType = false;
                                     break;
+                                case "Reality":
+                                    if (createdata.type.toUpperCase().startsWith("A") || createdata.type.toUpperCase().startsWith("S")) {
+                                        var dictRT = new DictRT_A_S(lastpos.toString(), undefined, createdata.type);
+                                        template = dictRT.GetTemplate(createdata.id, false);
+                                    }
+                                    else
+                                        validType = false;
+                                    break;
                                 default:
                                     validType = false;
                                     break;
@@ -2756,6 +2965,82 @@ export class DictionariesForm {
                                 language: "plaintext",
                                 content: equates,
                             }).then(document => { vscode.window.showTextDocument(document); });
+                        }
+                        return;
+                    case 'export':
+                        var filedata = message.data;
+                        var exportFile = "<html><head><style>table, th, td {border: 1px solid gray;border-collapse: collapse;}</style></head><body><br /><div><button onclick=\"exportTableToTXT()\" style='display:inline-block;margin-right: 20px;'>Export To TXT</button><button onclick=\"exportTable()\" style='display:inline-block'>Export To HTML</button></div>";
+                        var mapTables:Map<string, string> = new Map();
+                        var i;
+                        for (i = 0; i < filedata.items.length; i++) {
+                            var header = "<tr>";
+                            var row = "<tr>";
+                            var tabletype = "";
+                            var j;
+                            header += "<th>ID</th>";
+                            row += "<td>" + filedata.items[i].id + "</td>";
+                            for (j = 0; j < filedata.items[i].values.length; j++) {
+                                var attr = filedata.items[i].values[j];
+                                    header += "<th>" + attr.name.replace(filedata.items[i].pos.toString(), "").toUpperCase() + "</th>";
+                                row += "<td>" + attr.value + "</td>";
+                                if (j == 0)
+                                    tabletype = attr.value;
+                            }
+                            header += "</tr>";
+                            row += "</tr>";
+                            if (mapTables.has(tabletype))
+                                mapTables.set(tabletype, mapTables.get(tabletype) + row)
+                            else
+                                mapTables.set(tabletype, header + row)
+                        }                   
+                        for (var [clave, valor] of mapTables) {
+                            exportFile += "<br /><table>" + valor + "</table>";
+                        }
+                        exportFile += "<br /><div><button onclick=\"exportTableToTXT()\" style='display:inline-block;margin-right: 20px;'>Export To TXT</button><button onclick=\"exportTable()\" style='display:inline-block'>Export To HTML</button></div><br /><script>var vscode = acquireVsCodeApi();function exportTable() { vscode.postMessage({command: 'html',data: {}}) }";
+                        exportFile += "function exportTableToTXT() { var csv = [];var tables = document.querySelectorAll('table');for (var k = 0; k < tables.length; k++){if (k != 0)csv.push('');var rows = tables[k].getElementsByTagName('tr');for (var i = 0; i < rows.length; i++){var row = [], cols = rows[i].querySelectorAll('td, th');for (var j = 0; j < cols.length; j++)row.push(cols[j].innerText);csv.push(row.join('\\t'));}}vscode.postMessage({command: 'txt',data: csv.join('\\n')});}";
+                        exportFile += "</script></body></html>";
+
+                        if (exportFile) {
+                            var exportPanel = vscode.window.createWebviewPanel(
+                                'exportForm',
+                                'Export ' + fileName,
+                                vscode.ViewColumn.One,
+                                {
+                                    enableScripts: true,
+                                    retainContextWhenHidden: false,                                    
+                                }
+                            );
+                            exportPanel.webview.html = exportFile;
+                            exportPanel.webview.onDidReceiveMessage(
+                                message => {
+                                    switch (message.command) {
+                                        case 'html':
+                                            var onlytables = "";
+                                            var firstTable = true;
+                                            for (var [clave, valor] of mapTables) {
+                                                if (!firstTable)
+                                                {
+                                                    exportFile += "<br />";
+                                                    firstTable = false;
+                                                }
+                                                onlytables += "<table>" + valor + "</table>";
+                                            }
+                                            vscode.workspace.openTextDocument({
+                                                language: "html",
+                                                content: onlytables,
+                                            }).then(document => { vscode.window.showTextDocument(document); });
+                                            return;
+                                        case 'txt':
+                                            vscode.workspace.openTextDocument({
+                                                language: "plaintext",
+                                                content: message.data,
+                                            }).then(document => { vscode.window.showTextDocument(document); });
+                                            return;
+                                    }
+                                },
+                                undefined,
+                                this.mainContext.subscriptions
+                            );
                         }
                         return;
                     case 'exit':
@@ -2983,6 +3268,14 @@ export class DictionariesForm {
                         else if (type.value.toUpperCase().startsWith("A") || type.value.toUpperCase().startsWith("S") || type.value.toUpperCase().startsWith("X")) {
                             var dictJBA = DictJB_A_S_X.FromValues(filedata.items[iindex].pos, filedata.items[iindex].values);
                             record = dictJBA.ToRecord();
+                        }
+                        else
+                            validType = false;
+                        break;
+                    case "Reality":
+                        if (type.value.toUpperCase().startsWith("A") || type.value.toUpperCase().startsWith("S")) {
+                            var dictRTA = DictRT_A_S.FromValues(filedata.items[iindex].pos, filedata.items[iindex].values);
+                            record = dictRTA.ToRecord();
                         }
                         else
                             validType = false;

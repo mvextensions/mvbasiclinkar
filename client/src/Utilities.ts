@@ -28,3 +28,8 @@ export class Utilities {
 		}
 	}
 }
+
+export interface MyQuickPickItem extends vscode.QuickPickItem {
+	path: string;
+	obj?: any;
+}

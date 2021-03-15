@@ -2,3 +2,5 @@ out
 node_modules
 client/server
 .vscode-test
+mvbasiclinkar-1.0.2.vsix
+mvbasiclinkar-1.0.3.vsix

@@ -6,7 +6,7 @@ import { LkNode } from './LkNode';
 
 import { ConnectionForm, Connection } from './connection';
 import { LkData } from './lkdata';
-import { Utilities } from './Utilities';
+import { MyQuickPickItem, Utilities } from './Utilities';
 import { LkFileSystemProvider, Entry, Directory } from './lkSystemProvider';
 import { TextDecoder } from 'util';
 import { DictionariesForm } from './dictionaries';
@@ -108,7 +108,7 @@ export class FileExplorer {
 					if (capturing) {
 						FileExplorer.outputChannel.clear();
 						FileExplorer.outputChannel.appendLine(capturing.replace(new RegExp('\xFE', 'gi'), "\r\n"));
-						FileExplorer.outputChannel.show();
+						FileExplorer.outputChannel.show(true);
 					}
 				}
 			}
@@ -137,6 +137,112 @@ export class FileExplorer {
 				FileExplorer.lkTerminal = vscode.window.createTerminal("LINKAR (TERMINAL)");
 			}
 		});
+
+		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.searchFiles', async _ => {
+			const txt = await vscode.window.showInputBox({ prompt: 'MV Basic program or item to search' });
+			if (txt) {
+				if (treeDataProvider.models) {
+					let items: MyQuickPickItem[] = [];
+					for (var i = 0; i < treeDataProvider.models.length; i++)
+					{
+						var linkarFs = treeDataProvider.models[i];
+						if (linkarFs && linkarFs.root && linkarFs.root.entries) {
+							for (const [key, value] of linkarFs.root.entries) {							
+								if (value)
+								{
+									var dirs = (value as Directory).entries;
+									var conn = value.name;
+									for (const [key, value] of dirs) {		
+										var dirs2 = (value as Directory).entries;
+										var acc = value.name;
+										for (const [key, value] of dirs2) {	
+											if (value)
+											{
+												if (key.toUpperCase().indexOf(txt.toUpperCase()) !== -1)
+												{
+													items.push({
+														label: value.name,
+														description: "",
+														detail: conn + "/" + acc + "/" + value.name,
+														path: linkarFs.connection.scheme + ":/" + conn + "/" + acc + "/" + value.name
+													});
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					if (items && items.length > 0)
+					{
+						vscode.window.showQuickPick(items, { placeHolder: 'Select items',canPickMany: true }).then(selection => {
+							if (!selection) {
+								return;
+							}
+							for (var i = 0; i < selection.length; i++)
+							{		
+								var newuri = vscode.Uri.parse(selection[i].path);
+								try{
+									vscode.window.showTextDocument(newuri, { preview: false });
+								}
+								catch (error)
+								{
+									vscode.window.showErrorMessage(error);
+								}
+							}
+						});
+					}
+				}
+			}
+		}));
+
+		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.recentFiles', async _ => {			
+			var confs = vscode.workspace.getConfiguration();
+			var conf = confs.get('linkar.history') as string[];
+			let items: MyQuickPickItem[] = [];
+			for (var i = 0; i < conf.length; i++)
+			{
+				var det = conf[i].substr(conf[i].indexOf("/") + 1);
+				var name = conf[i].substr(conf[i].lastIndexOf("/") + 1);
+				items.push({
+					label: name,
+					description: "",
+					detail: det,
+					path: conf[i]
+				});
+			}
+			if (items && items.length > 0)
+			{
+				vscode.window.showQuickPick(items, { placeHolder: 'Select items',canPickMany: true }).then(selection => {
+					if (!selection) {
+						return;
+					}
+					for (var i = 0; i < selection.length; i++)
+					{	
+						var newuri = vscode.Uri.parse(selection[i].path);
+						try{
+							vscode.window.showTextDocument(newuri, { preview: false });
+						}
+						catch (error)
+						{
+							vscode.window.showErrorMessage(error);
+						}
+					}
+				});
+			}
+		}));
+
+		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.clearHistory', async _ => {		
+			vscode.window.showInformationMessage('Are you sure you want to clear the items of the Linkar history?', 'Clear', 'Cancel').then(async selection => {
+				if (selection == "Clear") {
+					var confs = vscode.workspace.getConfiguration();
+					var conf = confs.get('linkar.history') as string[];
+					conf = [];
+					confs.update("linkar.history", conf, vscode.ConfigurationTarget.Global);
+				}
+			});				
+		}));
 
 		//FILES
 		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.newItem', async (node: LkNode) => {
@@ -176,6 +282,9 @@ export class FileExplorer {
 					case "jBASE":
 						selectClause = "WITH *A0 # \"$]\"";
 						break;
+					case "Reality":
+                		selectClause = "WITH A0 # \"$]\"";
+                	break;
 				}
 				var filePagination = "False";
 				var fileRecPerPage = "5000";
@@ -380,84 +489,119 @@ export class FileExplorer {
 				fromTree = true;
 			}
 			if (uri) {
-				var item = await vscode.window.showInputBox({ prompt: 'Save as:' });
+				var lkFs = treeDataProvider.getModelFromUri(uri);
+				let parent = lkFs._lookupParentDirectory(uri);
 
-				if (item) {
-					var lkFs = treeDataProvider.getModelFromUri(uri);
-					let parent = lkFs._lookupParentDirectory(uri);
-
-					var buffer;
-					var record;
-					var newRecord;
-					var readError = "";
-
-					var isOpened = false;
-					for (var editor of vscode.window.visibleTextEditors) {
-						if (editor.document.uri.scheme == uri.scheme && editor.document.uri.fsPath == uri.fsPath) {
-							isOpened = true;
-							break;
+				let items: MyQuickPickItem[] = [];
+				for (var i = 0; i < treeDataProvider.models.length; i++)
+				{
+					var linkarFs = treeDataProvider.models[i];
+					if (linkarFs && linkarFs.root && linkarFs.root.entries && linkarFs.initialized) {
+						for (const [key, value] of linkarFs.root.entries) {		
+							for (const [key, value2] of (value as Directory).entries) {		
+								if (value2)
+								{
+									var itemContent = {
+										label: value2.name,
+										description: "",
+										detail: value.name + "/" + value2.name,
+										path: linkarFs.connection.scheme + ":/" + value.name + "/" + value2.name + "/",
+										obj: {fn:value2.name}
+									};
+									if (lkFs.connection.scheme == linkarFs.connection.scheme && parent.name == value2.name)
+										items.unshift(itemContent);
+									else
+										items.push(itemContent);
+								}
+							}					
 						}
 					}
+				}
 
-					if (isOpened) {
-						record = vscode.window.activeTextEditor.document.getText();
-						buffer = Buffer.from(record);
-						newRecord = record.replace(new RegExp('\r\n', 'gi'), '\xFE');
-						newRecord = newRecord.replace(new RegExp('\r', 'gi'), '\xFE');
-						newRecord = newRecord.replace(new RegExp('\n', 'gi'), '\xFE');
-					}
-					else {
-						if (lkFs.connection.ondemand) {
-							let basename = path.posix.basename(uri.path);
-							var dataReadRecs = Buffer.from(basename).toString('base64');
-							var dataRead = { CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, DICT_CLAUSE: "", RECORDS: dataReadRecs };
-							var resp = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "read", dataRead);
-							if (resp && resp.COMMAND) {
-								var lkdataRead = new LkData(resp.COMMAND);
-								newRecord = lkdataRead.OutputDataElements.get(LkData.RECORD_KEY);
-								record = newRecord.replace(new RegExp('\xFE', 'gi'), "\r\n")
-								buffer = Buffer.from(record);
-							} else {
-								readError = "ERROR (" + uri.fsPath + "): Failed to read";
+				if (items && items.length > 0)
+				{
+					vscode.window.showQuickPick(items, { placeHolder: 'Select target file to save', canPickMany: false }).then(selection => {
+						if (!selection) {
+							return;
+						}
+
+						vscode.window.showInputBox({ prompt: 'Save in ' + selection.detail, placeHolder: "Type item or program name" }).then(item => {
+							if (item) {
+								//READ			
+								var buffer;
+								var record;
+								var newRecord;
+								var readError = "";
+			
+								var isOpened = false;
+								for (var editor of vscode.window.visibleTextEditors) {
+									if (editor.document.uri.scheme == uri.scheme && editor.document.uri.fsPath == uri.fsPath) {
+										isOpened = true;
+										break;
+									}
+								}
+			
+								if (isOpened) {
+									record = vscode.window.activeTextEditor.document.getText();
+									buffer = Buffer.from(record);
+									newRecord = record.replace(new RegExp('\r\n', 'gi'), '\xFE');
+									newRecord = newRecord.replace(new RegExp('\r', 'gi'), '\xFE');
+									newRecord = newRecord.replace(new RegExp('\n', 'gi'), '\xFE');
+								}
+								else {
+									if (lkFs.connection.ondemand) {
+										let basename = path.posix.basename(uri.path);
+										var dataReadRecs = Buffer.from(basename).toString('base64');
+										var dataRead = { CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, DICT_CLAUSE: "", RECORDS: dataReadRecs };
+										var resp = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "read", dataRead);
+										if (resp && resp.COMMAND) {
+											var lkdataRead = new LkData(resp.COMMAND);
+											newRecord = lkdataRead.OutputDataElements.get(LkData.RECORD_KEY);
+											record = newRecord.replace(new RegExp('\xFE', 'gi'), "\r\n")
+											buffer = Buffer.from(record);
+										} else {
+											readError = "ERROR (" + uri.fsPath + "): Failed to read";
+										}
+									}
+									else {
+										buffer = lkFs._lookupAsFile(uri, false).data;
+										record = new TextDecoder("utf-8").decode(buffer);
+										newRecord = record.replace(new RegExp('\r\n', 'gi'), '\xFE');
+										newRecord = newRecord.replace(new RegExp('\r', 'gi'), '\xFE');
+										newRecord = newRecord.replace(new RegExp('\n', 'gi'), '\xFE');
+									}
+								}
+								if (readError) {
+									vscode.window.showErrorMessage(readError);
+								}
+								else {
+									//WRITE
+									var id = item;
+									var fn = selection.obj.fn;
+									var itemuri = vscode.Uri.parse(selection.path + id);
+									var newlkFs = treeDataProvider.getModelFromUri(itemuri);
+									var dataNewRecs = Buffer.from(id + "\x1C" + newRecord).toString('base64');
+									var dataNew = { READ_AFTER: "False", CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", OPTIMISTIC_LOCK: "False", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: fn, RECORDS: dataNewRecs };
+									var respWrite = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "new", dataNew);
+									if (respWrite && respWrite.COMMAND) {
+										var lkdata = new LkData(respWrite.COMMAND);
+										var error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
+										if (error) {
+											vscode.window.showErrorMessage(error);
+										}
+										else {
+											/*lkFs*/newlkFs.writeFile(itemuri, buffer, { create: true, overwrite: true, isNew: false, onDemand: lkFs.connection.ondemand });
+											vscode.window.showTextDocument(itemuri);
+											treeDataProvider.refresh();
+										}
+									}
+									else
+										vscode.window.showErrorMessage("ERROR (" + itemuri.fsPath + "): Failed to write");
+								}
 							}
-						}
-						else {
-							buffer = lkFs._lookupAsFile(uri, false).data;
-							record = new TextDecoder("utf-8").decode(buffer);
-							newRecord = record.replace(new RegExp('\r\n', 'gi'), '\xFE');
-							newRecord = newRecord.replace(new RegExp('\r', 'gi'), '\xFE');
-							newRecord = newRecord.replace(new RegExp('\n', 'gi'), '\xFE');
-						}
-					}
-					if (readError) {
-						vscode.window.showErrorMessage(readError);
-					}
-					else {
-						var fn = parent.name;
-						var id = item;
-						if (item.indexOf(" ") != -1) {
-							fn = item.substring(0, item.lastIndexOf(" "));
-							id = item.substring(item.lastIndexOf(" ") + 1);
-						}
-						var itemuri = vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fn + "/" + id);
-						var dataNewRecs = Buffer.from(id + "\x1C" + newRecord).toString('base64');
-						var dataNew = { READ_AFTER: "False", CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", OPTIMISTIC_LOCK: "False", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: fn, RECORDS: dataNewRecs };
-						var respWrite = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "new", dataNew);
-						if (respWrite && respWrite.COMMAND) {
-							var lkdata = new LkData(respWrite.COMMAND);
-							var error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
-							if (error) {
-								vscode.window.showErrorMessage(error);
-							}
-							else {
-								lkFs.writeFile(itemuri, buffer, { create: true, overwrite: true, isNew: false, onDemand: lkFs.connection.ondemand });
-								vscode.window.showTextDocument(itemuri);
-								treeDataProvider.refresh();
-							}
-						}
-						else
-							vscode.window.showErrorMessage("ERROR (" + itemuri.fsPath + "): Failed to write");
-					}
+						});
+
+					});
 				}
 			}
 		}));
@@ -548,7 +692,7 @@ export class FileExplorer {
 				var linkarFs = treeDataProvider.getModelFromUri(_uri);
 				if (linkarFs) {
 					if (this.Compile(linkarFs, filename, basename))
-						this.Catalog(linkarFs, filename, basename);
+						this.Catalog(linkarFs, filename, basename, true);
 				}
 			}
 		}));
@@ -591,7 +735,7 @@ export class FileExplorer {
 
 				var linkarFs = treeDataProvider.getModelFromUri(uri);
 				if (linkarFs) {
-					this.Catalog(linkarFs, filename, basename);
+					this.Catalog(linkarFs, filename, basename, false);
 				}
 			}
 		}));
@@ -690,7 +834,7 @@ export class FileExplorer {
 				if (capturing) {
 					FileExplorer.outputChannel.clear();
 					FileExplorer.outputChannel.appendLine(capturing.replace(new RegExp('\xFE', 'gi'), "\r\n"));
-					FileExplorer.outputChannel.show();
+					FileExplorer.outputChannel.show(true);
 					isOk = true;
 				}
 			}
@@ -700,7 +844,7 @@ export class FileExplorer {
 		return isOk;
 	}
 
-	private Catalog(linkarFs: LkFileSystemProvider, filename: string, basename: string): boolean {
+	private Catalog(linkarFs: LkFileSystemProvider, filename: string, basename: string, append: boolean): boolean {
 		var isOk: boolean = false;
 		var cmd = linkarFs.connection.catalogcmd + " " + filename + " " + basename + " " + linkarFs.connection.catalogarg;
 		var dataExecute = { STATEMENT: cmd, CUSTOM_VARS: "", OUTPUT_FORMAT: "MV" };
@@ -714,9 +858,10 @@ export class FileExplorer {
 			else {
 				var capturing = lkdata.OutputDataElements.get(LkData.CAPTURING_KEY);
 				if (capturing) {
-					FileExplorer.outputChannel.clear();
+					if (!append)
+						FileExplorer.outputChannel.clear();
 					FileExplorer.outputChannel.appendLine(capturing.replace(new RegExp('\xFE', 'gi'), "\r\n"));
-					FileExplorer.outputChannel.show();
+					FileExplorer.outputChannel.show(true);
 					isOk = true;
 				}
 			}

@@ -151,13 +151,17 @@ You can create as many connections as you need. MV Basic Linkar extension allows
   <img src="https://www.kosday.com/vscodeimages/003.jpg" alt="Connection buttons" title="Connection buttons">
 </p>
 
-**New Connection**: Create a new connection.
+**New Connection (1)**: Create a new connection.
 
-**Collapse all the Linkar explorer tree**: Collapse all the tree, connections, files and programs.
+**Search Items (2)**: Searches all open Linkar connections for item names matching the text to be searched. You will be able to open the chosen items.
 
-**Dictionaries Management**:Opens a text box to write the filename. Then you can see, create, delete, update the file dictionaries.
+**View Recent Opened Items (3)**: View the last 50  opened items in any connection.
 
-**Execute TCL Command**: Opens a textbox to write the TCL command and then execute it in the database. The result appears in the output tab of the Vs Code Terminal.
+**Collapse all the Linkar explorer tree (4)**: Collapse all the tree, connections, files and programs.
+
+**Dictionaries Management (5)**:Opens a text box to write the filename. Then you can see, create, delete, update the file dictionaries.
+
+**Execute TCL Command (6)**: Opens a textbox to write the TCL command and then execute it in the database. The result appears in the output tab of the Vs Code Terminal.
 
 **WARNING!!** Do not use this resource to test programs, if the TCL Command execution crashes all the EntryPoint line will crash, and you and the rest of team may lose all connections.
 
@@ -165,19 +169,19 @@ You can create as many connections as you need. MV Basic Linkar extension allows
   <img src="https://www.kosday.com/vscodeimages/004.jpg" alt="TCL Command" title="TCL Command">
 </p>
 
-**Open custom terminal**: Opens a telnet or SSH session with the database. It can be used for debugging purpose inside the VS Code environment (it uses a database line).
+**Open custom terminal (7)**: Opens a telnet or SSH session with the database. It can be used for debugging purpose inside the VS Code environment (it uses a database line).
 
 <p align="center">
   <img src="https://www.kosday.com/vscodeimages/005.jpg" alt="Custom terminal" title="Custom terminal">
 </p>
 
-**Delete connection**: Delete the connection.
+**Delete connection (8)**: Delete the connection.
 
-**Edit connection**: Edit the connection to change the preferences. You can add files, etc.
+**Edit connection (9)**: Edit the connection to change the preferences. You can add files, etc.
 
-**Unload connection**: Unload all the files of that connection.
+**Unload connection (10)**: Unload all the files of that connection.
 
-**Load connections**: Load all the files of that connection.
+**Load connections (11)**: Load all the files of that connection.
 
 <p align="center">
   <img src="https://www.kosday.com/vscodeimages/006.jpg" alt="Load connections" title="Load connections">
@@ -199,7 +203,7 @@ You can create as many connections as you need. MV Basic Linkar extension allows
 
 **Catalog Program**: Catalog the program. The result appears in the output tab of the VS Code terminal.
 
-**Save as**: Save the BASIC code with a new name.
+**Save as**: Save the BASIC code with a new name. By default in the same file and you can select another Connection or File if you desire.
 
 **Delete Item**: Delete the program or subroutine.
 
@@ -211,13 +215,13 @@ You can create as many connections as you need. MV Basic Linkar extension allows
   <img src="https://www.kosday.com/vscodeimages/007.jpg" alt="File tree options" title="File tree options">
 </p>
 
-**Open saved list**: Open all items in a MV database previous saved list.
+**Dictionary Management (1)**: You can see, create, delete, update the file dictionaries.
 
-**New Item**: Create a new program or subroutine in the selected file.
+**Open saved list (2)**: Open all items in a MV database previous saved list.
 
-**Refresh file**: Refresh the list of items in the file.
+**New Item (3)**: Create a new program or subroutine in the selected file.
 
-**Dictionary Management**: You can see, create, delete, update the file dictionaries.
+**Refresh file (4)**: Refresh the list of items in the file.
 
 **Item record options (program or subroutine)**
 
@@ -225,11 +229,11 @@ You can create as many connections as you need. MV Basic Linkar extension allows
   <img src="https://www.kosday.com/vscodeimages/008.jpg" alt="Item record options" title="Item record options">
 </p>
 
-**Delete Item**: Delete the program or subroutine.
+**Delete Item (1)**: Delete the program or subroutine.
 
-**Rename Item**:Rename the program or subroutine.
+**Rename Item (2)**:Rename the program or subroutine.
 
-**Save as Item**: Save the BASIC code with a new name.
+**Save as Item (3)**: Save the BASIC code with a new name. By default in the same file and you can select another Connection or File if you desire.
 
 ## 7. Working with file dictionaries
 
@@ -245,13 +249,23 @@ You can create as many connections as you need. MV Basic Linkar extension allows
   <img src="https://www.kosday.com/vscodeimages/011.jpg" alt="Item record options" title="D3 Dictionaries">
 </p>
 
-**Dictionaries**: List of all dictionaries in the file. 
+**Dictionaries (1)**: List of all dictionaries in the file. 
 
-**Delete Dicts**:  Delete the dictionary item. You must click on the delete icon and later click on Save Changes to delete all the dictionary items you have mark for delete. 
+**Delete Dicts (2)**:  Delete the dictionary item. You must click on the delete icon and later click on Save Changes to delete all the dictionary items you have mark for delete. 
 
-**New Dict**: Create a new dictionary in the file. 
+**New Dict (3)**: Create a new dictionary in the file. 
 
-**Generate Equates**: Generate equates with all the dictionary items in the file so you can copy/paste them in your source code. 
+**Export (4)**: Displays a table of all the dictionaries that can be exported to TXT or HTML.
+
+<p align="center">
+  <img src="https://www.kosday.com/vscodeimages/010b.jpg" alt="QM Dictionaries" title="QM Dictionaries">
+</p>
+
+<p align="center">
+  <img src="https://www.kosday.com/vscodeimages/011b.jpg" alt="Item record options" title="D3 Dictionaries">
+</p>
+
+**Generate Equates (5)**: Generate equates with all the dictionary items in the file so you can copy/paste them in your source code. 
 
 **Save changes**: Save all new dictionary items and changes in the database. 
 
@@ -316,6 +330,9 @@ Pressing Ctl+Space after the words *GOTO*, *GOSUB* or *GO TO*, will allow you to
 | ALT+S + ALT+C | Save, compile and catalogue the code record      |
 | ALT+A + ALT+B | Compile the code record |
 | ALT+A + ALT+C | Catalog the code record      |
+| ALT+A + ALT+F | Search Items in live Connections |
+| ALT+A + ALT+H | View Recent Items |
+| ALT+A + ALT+D | Clear the Linkar history records |
 
 ## Licence
 

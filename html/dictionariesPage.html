@@ -321,6 +321,7 @@
 <body>
   <h2>[%TITLE%]
     <div style="float:right;margin-bottom: 10px;">
+      <button onclick="Export()" style="margin-right:20px;background-color:darkolivegreen;">Export</button>
       <button onclick="GenerateEquate()" style="margin-right:20px;background-color: darkolivegreen;">Generate
         Equate</button>
       <button onclick="Cancel()" style="margin-right:20px;background-color:firebrick;">Discard Changes</button>
@@ -345,6 +346,7 @@
 
   <h2>
     <div style="float:right;margin-bottom: 10px;">
+      <button onclick="Export()" style="margin-right:20px;background-color:darkolivegreen;">Export</button>
       <button onclick="GenerateEquate()" style="margin-right:20px;background-color:darkolivegreen;">Generate
         Equate</button>
       <button onclick="Cancel()" style="margin-right:20px;background-color:firebrick;">Discard Changes</button>
@@ -481,6 +483,17 @@
 
         vscode.postMessage({
           command: "equate",
+          data: filedata
+        })
+      }
+    }
+
+    function Export() {
+      if (filedata) {
+        GetPostData();
+
+        vscode.postMessage({
+          command: "export",
           data: filedata
         })
       }
