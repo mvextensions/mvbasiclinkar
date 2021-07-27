@@ -114,54 +114,86 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
             var fileRecPerPage = lkFs.connection.maxItemsPerFile.toString();
         }
         if (lkFs.connection.files && lkFs.connection.files != "") {
-            var fileNames = lkFs.connection.files.split('|');
-            var i = 0;
-            for (i = 0; i < fileNames.length; i++) {
-                var fileName = fileNames[i];
-
-                var dataSelect;
-                if (lkFs.connection.ondemand)
-                    dataSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "True", FILE_NAME: fileName, SELECT_CLAUSE: selectClause, SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: "", PAGINATION: filePagination, PAGE_NUMBER: "1", RECORDS_FOR_PAGE: fileRecPerPage };
+            var fileNames;
+            if (lkFs.connection.files.startsWith('GET.LIST '))
+            {
+                var getListName = lkFs.connection.files.substr(lkFs.connection.files.indexOf(' ')+1)
+                var getListNameEnd = getListName.indexOf('|');
+                if (getListNameEnd < 0)
+                    getListNameEnd = getListName.indexOf(' ');
+                var getListCmd = "";
+                if (getListNameEnd > 0)    
+                    getListCmd = 'GET.LIST ' + getListName.substr(0,getListNameEnd);
                 else
-                    dataSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "False", FILE_NAME: fileName, SELECT_CLAUSE: selectClause, SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: "", PAGINATION: filePagination, PAGE_NUMBER: "1", RECORDS_FOR_PAGE: fileRecPerPage };
+                    getListCmd = 'GET.LIST ' + getListName;
+                var dataList = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "True", FILE_NAME: "VOC", SELECT_CLAUSE: "", SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: getListCmd};
+					var respList = Utilities.requestJson(lkFs.connection.scheme, lkFs.connection.GetURL(), lkFs.connection.apikey, "select", dataList);
+					if (respList && respList.COMMAND) {
+						var lkdataList = new LkData(respList.COMMAND);
+						var errorList = lkdataList.OutputDataElements.get(LkData.ERRORS_KEY);
+						if (errorList)
+							vscode.window.showErrorMessage(errorList);
+						else {
+							var lstids = lkdataList.OutputDataElements.get(LkData.RECORD_ID_KEY);
+							if (lstids) {
+								fileNames = lstids.split("\x1E");
+							}
+						}
+					}
+            }
+            else
+                fileNames = lkFs.connection.files.split('|');
 
-                var respSelect = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "select", dataSelect);
-                if (respSelect && respSelect.COMMAND) {
-                    lkFs.createDirectory(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fileName + "/"));
-                    var lkdataSelect = new LkData(respSelect.COMMAND);
-                    var errorSelect = lkdataSelect.OutputDataElements.get(LkData.ERRORS_KEY);
-                    if (errorSelect)
-                        vscode.window.showErrorMessage(errorSelect);
-                    else {
-                        var lstids = lkdataSelect.OutputDataElements.get(LkData.RECORD_ID_KEY);
-                        if (lstids) {
-                            var ids = lstids.split("\x1E");
-                            var lstrecords;
-                            if (!lkFs.connection.ondemand)
-                                lstrecords = lkdataSelect.OutputDataElements.get(LkData.RECORD_KEY).split("\x1E");
-                            var j = 0;
-                            for (j = 0; j < ids.length; j++) {
-                                var id = ids[j];
-                                try {
-                                    if (lkFs.connection.ondemand)
-                                        lkFs.writeFile(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fileName + "/" + id), new Uint8Array(0), { create: true, overwrite: true, isNew: false, onDemand: lkFs.connection.ondemand });
-                                    else {
-                                        if (lstrecords && lstrecords[j] != undefined && lstrecords[j] != null) {
-                                            var buff = Buffer.from(lstrecords[j].replace(new RegExp('\xFE', 'gi'), "\r\n"));
-                                            lkFs.writeFile(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fileName + "/" + id), buff, { create: true, overwrite: true, isNew: false, onDemand: lkFs.connection.ondemand });
+            if (fileNames)
+            {
+                var i = 0;
+                for (i = 0; i < fileNames.length; i++) {
+                    var fileName = fileNames[i];
+
+                    var dataSelect;
+                    if (lkFs.connection.ondemand)
+                        dataSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "True", FILE_NAME: fileName, SELECT_CLAUSE: selectClause, SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: "", PAGINATION: filePagination, PAGE_NUMBER: "1", RECORDS_FOR_PAGE: fileRecPerPage };
+                    else
+                        dataSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "False", FILE_NAME: fileName, SELECT_CLAUSE: selectClause, SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: "", PAGINATION: filePagination, PAGE_NUMBER: "1", RECORDS_FOR_PAGE: fileRecPerPage };
+
+                    var respSelect = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "select", dataSelect);
+                    if (respSelect && respSelect.COMMAND) {
+                        lkFs.createDirectory(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fileName + "/"));
+                        var lkdataSelect = new LkData(respSelect.COMMAND);
+                        var errorSelect = lkdataSelect.OutputDataElements.get(LkData.ERRORS_KEY);
+                        if (errorSelect)
+                            vscode.window.showErrorMessage(errorSelect);
+                        else {
+                            var lstids = lkdataSelect.OutputDataElements.get(LkData.RECORD_ID_KEY);
+                            if (lstids) {
+                                var ids = lstids.split("\x1E");
+                                var lstrecords;
+                                if (!lkFs.connection.ondemand)
+                                    lstrecords = lkdataSelect.OutputDataElements.get(LkData.RECORD_KEY).split("\x1E");
+                                var j = 0;
+                                for (j = 0; j < ids.length; j++) {
+                                    var id = ids[j];
+                                    try {
+                                        if (lkFs.connection.ondemand)
+                                            lkFs.writeFile(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fileName + "/" + id), new Uint8Array(0), { create: true, overwrite: true, isNew: false, onDemand: lkFs.connection.ondemand });
+                                        else {
+                                            if (lstrecords && lstrecords[j] != undefined && lstrecords[j] != null) {
+                                                var buff = Buffer.from(lstrecords[j].replace(new RegExp('\xFE', 'gi'), "\r\n"));
+                                                lkFs.writeFile(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fileName + "/" + id), buff, { create: true, overwrite: true, isNew: false, onDemand: lkFs.connection.ondemand });
+                                            }
                                         }
                                     }
-                                }
-                                catch (error) {
-                                    console.log("ERROR (" + lkFs.connection.name + "): Failer to write File: " + id + " in " + fileName)
+                                    catch (error) {
+                                        console.log("ERROR (" + lkFs.connection.name + "): Failer to write File: " + id + " in " + fileName)
+                                    }
                                 }
                             }
                         }
                     }
-                }
+                }        
+                vscode.window.showInformationMessage(lkFs.connection.name + " LOADED");
             }
-            vscode.window.showInformationMessage(lkFs.connection.name + " LOADED");
-            lkFs.initialized = true;
+            lkFs.initialized = true;            
         }
         else {
             var mainResponse;
@@ -189,9 +221,11 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                         mainSelectClause = "WITH TYPE = \"F\"\"DIR\"";
                         mainSortClause = "BY @ID";
                         break;
-                    case "Universe":
+                    case "UnivPerse":
                         mainFileName = "VOC";
-                        mainSelectClause = "WITH TYPE = \"F\"\"Q\" AND WITH @ID UNLIKE \"....O\"";
+                        //mainSelectClause = "WITH TYPE = \"F\"\"Q\" AND WITH @ID UNLIKE \"....O\"";
+                        //mainSelectClause = "WITH TYPE = \"F\"\"Q\" AND WITH @ID UNLIKE \"....O\" AND WITH @ID UNLIKE \"&...\"";
+                        mainSelectClause = "WITH TYPE LIKE \"F...\"\"Q\" AND WITH @ID UNLIKE \"....O\" AND WITH @ID UNLIKE \"&...\"";
                         mainSortClause = "BY TYPE BY @ID";
                         break;
                     case "mvBASE":
@@ -222,18 +256,18 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                 }
                 var lstfilenames = lkdataDB.OutputDataElements.get(LkData.RECORD_ID_KEY);
                 if (lstfilenames) {
-                    var fileNames = lstfilenames.split("\x1E");
+                    var arrfileNames = lstfilenames.split("\x1E");
                     var i = 0;
-                    for (i = 0; i < fileNames.length; i++) {
-                        var fileName = fileNames[i];
+                    for (i = 0; i < arrfileNames.length; i++) {
+                        var itfileName = arrfileNames[i];
                         var dataSelect;
                         if (lkFs.connection.ondemand)
-                            dataSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "True", FILE_NAME: fileName, SELECT_CLAUSE: selectClause, SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: "", PAGINATION: filePagination, PAGE_NUMBER: "1", RECORDS_FOR_PAGE: fileRecPerPage };
+                            dataSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "True", FILE_NAME: itfileName, SELECT_CLAUSE: selectClause, SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: "", PAGINATION: filePagination, PAGE_NUMBER: "1", RECORDS_FOR_PAGE: fileRecPerPage };
                         else
-                            dataSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "False", FILE_NAME: fileName, SELECT_CLAUSE: selectClause, SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: "", PAGINATION: filePagination, PAGE_NUMBER: "1", RECORDS_FOR_PAGE: fileRecPerPage };
+                            dataSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "False", FILE_NAME: itfileName, SELECT_CLAUSE: selectClause, SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: "", PAGINATION: filePagination, PAGE_NUMBER: "1", RECORDS_FOR_PAGE: fileRecPerPage };
                         var respSelect = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "select", dataSelect);
                         if (respSelect && respSelect.COMMAND) {
-                            var dirUri = vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fileName + "/");
+                            var dirUri = vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + itfileName + "/");
                             lkFs.createDirectory(dirUri);
                             var lkdataSelect = new LkData(respSelect.COMMAND);
                             var errorSelect = lkdataSelect.OutputDataElements.get(LkData.ERRORS_KEY);
@@ -251,16 +285,16 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                                         var id = ids[j];
                                         try {
                                             if (lkFs.connection.ondemand)
-                                                lkFs.writeFile(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fileName + "/" + id), new Uint8Array(0), { create: true, overwrite: true, isNew: false, onDemand: lkFs.connection.ondemand });
+                                                lkFs.writeFile(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + itfileName + "/" + id), new Uint8Array(0), { create: true, overwrite: true, isNew: false, onDemand: lkFs.connection.ondemand });
                                             else {
                                                 if (lstrecords && lstrecords[j]) {
                                                     var buff = Buffer.from(lstrecords[j].replace(new RegExp('\xFE', 'gi'), "\r\n"));
-                                                    lkFs.writeFile(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fileName + "/" + id), buff, { create: true, overwrite: true, isNew: false, onDemand: lkFs.connection.ondemand });
+                                                    lkFs.writeFile(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + itfileName + "/" + id), buff, { create: true, overwrite: true, isNew: false, onDemand: lkFs.connection.ondemand });
                                                 }
                                             }
                                         }
                                         catch (error) {
-                                            vscode.window.showErrorMessage("ERROR (" + lkFs.connection.name + "): Failer to write item " + id + " in " + fileName + " file");
+                                            vscode.window.showErrorMessage("ERROR (" + lkFs.connection.name + "): Failer to write item " + id + " in " + itfileName + " file");
                                         }
                                     }
                                 }

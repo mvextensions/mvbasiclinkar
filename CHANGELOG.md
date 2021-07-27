@@ -25,3 +25,8 @@
     Displays a table of all the dictionaries that can be exported to TXT or HTML.
 - Save As method
     Now it can also be saved in another file or on another file on another open connection.
+
+## 1.0.4
+
+- Added new feature: Now you can have the program files on a saved list in the database and use it from vscode using GET.LIST clause
+- Bug fixed in Universe by selecting all files

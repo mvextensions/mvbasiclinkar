@@ -4,7 +4,7 @@
 	"description": "Linkar Extension for MV databases to manage MV Basic programs and data files dictionaries",
 	"author": "Kosday Solutions",
 	"icon": "logo.png",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"license": "MIT",
 	"publisher": "kosdaysolutions",
 	"categories": [
@@ -745,7 +745,7 @@
 							},
 							"files": {
 								"type": "string",
-								"description": "Included Files (for example FILE1|FILE2, empty for all files)"
+								"description": "Included Files (for example FILE1|FILE2, empty for all files or GET.LIST <list name> to use a saved list on the database)"
 							},
 							"maxItemsPerFile": {
 								"type": "number",
