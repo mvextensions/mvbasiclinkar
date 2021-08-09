@@ -4,7 +4,7 @@
 	"description": "Linkar Extension for MV databases to manage MV Basic programs and data files dictionaries",
 	"author": "Kosday Solutions",
 	"icon": "logo.png",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"license": "MIT",
 	"publisher": "kosdaysolutions",
 	"categories": [
@@ -194,6 +194,11 @@
 				}
 			},
 			{
+				"command": "fileExplorer.compareWithDatabase",
+				"title": "Compare with Database",
+				"category": "Linkar"
+			},
+			{
 				"command": "fileExplorer.writeBasicProgram",
 				"title": "Write-BASIC Program",
 				"category": "Linkar"
@@ -295,6 +300,12 @@
 				"command": "fileExplorer.catalogProgram",
 				"key": "alt+A alt+C",
 				"mac": "cmd+A cmd+C",
+				"when": "editorTextFocus && editorLangId == mvbasic"
+			},
+			{
+				"command": "fileExplorer.compareWithDatabase",
+				"key": "alt+A alt+I",
+				"mac": "cmd+A cmd+I",
 				"when": "editorTextFocus && editorLangId == mvbasic"
 			},
 			{
@@ -473,6 +484,11 @@
 					"group": "lkrecordopts@6"
 				},
 				{
+					"command": "fileExplorer.compareWithDatabase",
+					"group": "lkrecordopts@7",
+					"when": "editorLangId == mvbasic"
+				},
+				{
 					"command": "fileExplorer.insertValueMark",
 					"group": "lkeditoropts@1"
 				},
@@ -531,6 +547,10 @@
 				},
 				{
 					"command": "fileExplorer.openItemList",
+					"when": "false"
+				},
+				{
+					"command": "fileExplorer.compareWithDatabase",
 					"when": "false"
 				},
 				{

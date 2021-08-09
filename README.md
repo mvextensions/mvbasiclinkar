@@ -330,9 +330,38 @@ Pressing Ctl+Space after the words *GOTO*, *GOSUB* or *GO TO*, will allow you to
 | ALT+S + ALT+C | Save, compile and catalogue the code record      |
 | ALT+A + ALT+B | Compile the code record |
 | ALT+A + ALT+C | Catalog the code record      |
+| ALT+A + ALT+I | Compare with Database      |
 | ALT+A + ALT+F | Search Items in live Connections |
 | ALT+A + ALT+H | View Recent Items |
 | ALT+A + ALT+D | Clear the Linkar history records |
+
+## 10. Optimistic locking with database
+
+<p align="center">
+  <img src="https://www.kosday.com/vscodeimages/016.jpg" alt="Optimistic locking context menu" title="Optimistic locking context menu">
+</p>
+
+VS Code's optimistic locking system does not compare with the actual record in the database. The extension includes its own optimistic blocking control, each time it is recorded, it checks with the database in case there has been any modification in the original record read at the time.
+
+If a modification is found, an alarm goes off.
+
+<p align="center">
+  <img src="https://www.kosday.com/vscodeimages/017.jpg" alt="Optimistic locking exception" title="Optimistic locking exception">
+</p>
+
+The retry button will always return the error. Maintained by VS Code Standard control.
+
+The Save As button saves the record with another name.
+
+The Discard button returns the original record when VS Code read the record (not the current one from the database).
+
+The top X button closes the window. It is recommended by default. Once the window is closed, clicking the right button should use the Compare with Database option. It will check the differences between the open record and the one that exists in the database and act accordingly. 
+
+<p align="center">
+  <img src="https://www.kosday.com/vscodeimages/018.jpg" alt="Optimistic locking comparer" title="Optimistic locking comparer">
+</p>
+
+You have to make changes in this window, then you have to save them from here so that the original record will be updated with your change on the database avoiding the optimistic locking error.
 
 ## Licence
 

@@ -7,7 +7,7 @@ import { LkNode } from './LkNode';
 import { ConnectionForm, Connection } from './connection';
 import { LkData } from './lkdata';
 import { MyQuickPickItem, Utilities } from './Utilities';
-import { LkFileSystemProvider, Entry, Directory } from './lkSystemProvider';
+import { LkFileSystemProvider, Entry, Directory, ReadOnlyFileSystemProvider } from './lkSystemProvider';
 import { TextDecoder } from 'util';
 import { DictionariesForm } from './dictionaries';
 
@@ -16,6 +16,7 @@ export class FileExplorer {
 	private fileExplorer: vscode.TreeView<LkNode>;
 	public static outputChannel = vscode.window.createOutputChannel("LINKAR");
 	public static lkTerminal = vscode.window.createTerminal("LINKAR (TERMINAL)");
+
 
 	constructor(context: vscode.ExtensionContext) {
 		var models = this.LoadModels();
@@ -750,6 +751,57 @@ export class FileExplorer {
 		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.insertTextMark', async () => {
 			if (vscode.window.activeTextEditor)
 				vscode.window.activeTextEditor.insertSnippet(new vscode.SnippetString(String.fromCharCode(251)));
+		}));
+
+		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.compareWithDatabase', async (uri: vscode.Uri) => {
+
+			if (uri)
+			{
+				try{
+					let basename = path.posix.basename(uri.path);
+					let dirname = uri.with({ path: path.posix.dirname(uri.path) });
+					let filename = path.posix.basename(dirname.path);
+					var lkFs = treeDataProvider.getModelFromUri(uri);
+
+
+					var dataReadRecs = Buffer.from(basename).toString('base64');
+					var dataRead = { CALCULATED: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", FILE_NAME: filename, DICT_CLAUSE: "", RECORDS: dataReadRecs };
+					var resp = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "read", dataRead);
+					if (resp && resp.COMMAND) {
+
+						var lkdata = new LkData(resp.COMMAND);
+						var error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
+						if (error) {
+							throw vscode.FileSystemError.FileNotFound(error);
+						}
+						var txt = lkdata.OutputDataElements.get(LkData.RECORD_KEY);
+						if (txt) {
+							var rnd = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+								var r = Math.random() * 16 | 0,
+									v = c == 'x' ? r : (r & 0x3 | 0x8);
+								return v.toString(16);
+							});
+
+							var rosch = "rosch" + rnd;
+							var rofs = new ReadOnlyFileSystemProvider(rosch);						
+							vscode.workspace.registerFileSystemProvider(rosch, rofs, { isCaseSensitive: true, isReadonly: true });
+
+							rofs.createDirectory(vscode.Uri.parse(rosch + ":/" + uri.scheme + "/"));
+							rofs.createDirectory(vscode.Uri.parse(rosch + ":/" + uri.scheme + "/" + lkFs.connection.name + "/"));
+							rofs.createDirectory(vscode.Uri.parse(rosch + ":/" + uri.scheme + "/" + lkFs.connection.name + "/" + filename + "/"));
+							var newFile = vscode.Uri.parse(rosch + ":/" + uri.scheme + "/" + lkFs.connection.name + "/" + filename + "/" + basename);// + '(DATABASE)');
+							
+							rofs.writeFile(newFile, Buffer.from(txt.replace(new RegExp('\xFE', 'gi'), "\r\n")), { create: true, overwrite: true });
+							vscode.commands.executeCommand("vscode.diff", newFile, uri, basename + " (DATABASE) ↔ " + basename);
+						}
+					}
+				}
+				catch(err)
+				{
+					vscode.window.showErrorMessage(err);
+				}
+			}
+
 		}));
 
 		context.subscriptions.push(vscode.commands.registerCommand('fileExplorer.searchInOtherFile', async (uri: vscode.Uri) => {

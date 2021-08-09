@@ -30,3 +30,7 @@
 
 - Added new feature: Now you can have the program files on a saved list in the database and use it from vscode using GET.LIST clause
 - Bug fixed in Universe by selecting all files
+
+## 1.0.5
+
+- Added feature in VsCode optimistic locking checking also with the MV Database actual record
