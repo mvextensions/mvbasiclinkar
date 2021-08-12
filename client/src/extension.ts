@@ -22,6 +22,8 @@ var margin: number;
 var indent: number;
 var formattingEnabled: boolean;
 
+var ignoreIdentationInComments: boolean;
+
 export function activate(context: ExtensionContext) {
 
 	// Load config straight away
@@ -36,6 +38,7 @@ export function activate(context: ExtensionContext) {
 		customWordlist = vscode.workspace.getConfiguration("Linkar").get("customWords");
 		customWordPath = vscode.workspace.getConfiguration("Linkar").get("customWordPath");
 		logLevel = vscode.workspace.getConfiguration("Linkar").get("trace.server", "off");
+		ignoreIdentationInComments = vscode.workspace.getConfiguration("Linkar").get("ignoreIdentationInComments");
 	}
 
 	// Reload the config if changes are made
@@ -114,7 +117,6 @@ export function activate(context: ExtensionContext) {
 	// Start the client. This will also launch the server
 	client.start();
 
-
 	vscode.languages.registerDocumentFormattingEditProvider('mvbasic', {
 		provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
 			// first work out indents
@@ -125,7 +127,8 @@ export function activate(context: ExtensionContext) {
 				let rBlockStart = new RegExp("^(begin case$|lock |key\\(|if |evaluate |commit |rollback |readnext |open |write |writeu |writev |writevu |read |readv |readu |readt |readvu |matreadu |locate |locate\\(|openseq |matread |create |readlist |openpath |find |findstr |bscan)", "i")
 				let rBlockAlways = new RegExp("^(for |try|loop( |$))", "i")
 				let rBlockContinue = new RegExp(" (then|else|case|on error|locked)$", "i")
-				let rBlockEnd = new RegExp("^(end|end case|next|next\\s+.+|repeat)$| repeat$", "i")
+				let rBlockEnd = new RegExp("^(end|end case|next|next\\s+.+|repeat)$", "i")
+				let rBlockEndRepeat = new RegExp(" repeat$", "i")
 				let rBlockCase = new RegExp("^begin case$", "i")
 				let rBlockEndCase = new RegExp("^end case$", "i")
 				let rBlockTransaction = new RegExp("^(begin transaction|begin work)", "i")
@@ -149,7 +152,7 @@ export function activate(context: ExtensionContext) {
 					let curLine = document.lineAt(i);
 					let line = curLine.text;
 
-					// replace comment line with blank line
+					// replace comment line with blank line					
 					line = line.replace(rComment, "");
 
 					// remove comments after label (no semi-colon)
@@ -208,7 +211,7 @@ export function activate(context: ExtensionContext) {
 					}
 					if (rCatchEnd.test(line)) {
 						// decrement 1 to cater for catch stements
-						RowLevel[position] = Level -1;
+						RowLevel[position] = Level - 1;
 						position = i + 1
 					}
 					if (rBlockTransaction.test(line)) {
@@ -228,6 +231,11 @@ export function activate(context: ExtensionContext) {
 						Level--
 						position = i
 					}
+					else if (rBlockEndRepeat.test(line.trim())) {
+						position = i + 1
+						Level--
+					}
+
 					RowLevel[position] = Level
 				}
 
@@ -245,6 +253,9 @@ export function activate(context: ExtensionContext) {
 					if (RowLevel[i] === undefined) { continue; }
 
 					indentation = (RowLevel[i] * indent) + margin
+					if (ignoreIdentationInComments && rComment.test(lineText)){
+						indentation = 0
+					}
 					if (new RegExp("(^case\\s)", "i").test(lineText)) {
 						indentation -= indent
 					}

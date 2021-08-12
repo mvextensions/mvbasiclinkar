@@ -4,7 +4,7 @@
 	"description": "Linkar Extension for MV databases to manage MV Basic programs and data files dictionaries",
 	"author": "Kosday Solutions",
 	"icon": "logo.png",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"license": "MIT",
 	"publisher": "kosdaysolutions",
 	"categories": [
@@ -647,6 +647,12 @@
 					"type": "number",
 					"default": 3,
 					"description": "The number of characters to use when indenting code blocks."
+				},
+				"Linkar.ignoreIdentationInComments": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"description": "Ignore the indentation of comments by always leaving them at the beginning of the line (Warning: this causes the vscode functionality of collapsing or expanding code regions to malfunction since it is based on indentation)."
 				},
 				"Linkar.maxNumberOfProblems": {
 					"scope": "resource",

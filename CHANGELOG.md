@@ -34,3 +34,10 @@
 ## 1.0.5
 
 - Added feature in VsCode optimistic locking checking also with the MV Database actual record
+
+## 1.0.6
+
+- Fixed a bug in the Rename item method with the new Linkar versions
+- "Ignore Identation In Comments" setting added. Allow ignore the indentation of comments by always leaving them at the beginning of the line (Warning: this causes the vscode functionality of collapsing or expanding code regions to malfunction since it is based on indentation) 
+- Fixed a bug when formatting certain combinations of LOOP/UNTIL/REPEAT instructions.
+- Changes in the reference search, now detects better the word to search correcting some erroneous searches.

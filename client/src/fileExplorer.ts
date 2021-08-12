@@ -437,7 +437,7 @@ export class FileExplorer {
 				if (item) {
 					//WRITENEW					
 					var dataNewRecs = Buffer.from(item + "\x1C" + readedrecord).toString('base64');
-					var dataNew = { READ_AFTER: "False", CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", OPTIMISTIC_LOCK: "False", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, RECORD_IDS: dataNewRecs };
+					var dataNew = { READ_AFTER: "False", CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", OPTIMISTIC_LOCK: "False", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, RECORDS: dataNewRecs };
 					var resp = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "new", dataNew);
 					if (resp && resp.COMMAND) {
 						var lkdata = new LkData(resp.COMMAND);
@@ -553,7 +553,7 @@ export class FileExplorer {
 									if (lkFs.connection.ondemand) {
 										let basename = path.posix.basename(uri.path);
 										var dataReadRecs = Buffer.from(basename).toString('base64');
-										var dataRead = { CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, DICT_CLAUSE: "", RECORDS: dataReadRecs };
+										var dataRead = { CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, DICT_CLAUSE: "", RECORDS: dataReadRecs };										
 										var resp = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "read", dataRead);
 										if (resp && resp.COMMAND) {
 											var lkdataRead = new LkData(resp.COMMAND);
@@ -582,7 +582,7 @@ export class FileExplorer {
 									var itemuri = vscode.Uri.parse(selection.path + id);
 									var newlkFs = treeDataProvider.getModelFromUri(itemuri);
 									var dataNewRecs = Buffer.from(id + "\x1C" + newRecord).toString('base64');
-									var dataNew = { READ_AFTER: "False", CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", OPTIMISTIC_LOCK: "False", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: fn, RECORDS: dataNewRecs };
+									var dataNew = { READ_AFTER: "False", CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", OPTIMISTIC_LOCK: "False", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: fn, RECORDS: dataNewRecs };									
 									var respWrite = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "new", dataNew);
 									if (respWrite && respWrite.COMMAND) {
 										var lkdata = new LkData(respWrite.COMMAND);
@@ -789,7 +789,7 @@ export class FileExplorer {
 							rofs.createDirectory(vscode.Uri.parse(rosch + ":/" + uri.scheme + "/"));
 							rofs.createDirectory(vscode.Uri.parse(rosch + ":/" + uri.scheme + "/" + lkFs.connection.name + "/"));
 							rofs.createDirectory(vscode.Uri.parse(rosch + ":/" + uri.scheme + "/" + lkFs.connection.name + "/" + filename + "/"));
-							var newFile = vscode.Uri.parse(rosch + ":/" + uri.scheme + "/" + lkFs.connection.name + "/" + filename + "/" + basename);// + '(DATABASE)');
+							var newFile = vscode.Uri.parse(rosch + ":/" + uri.scheme + "/" + lkFs.connection.name + "/" + filename + "/" + basename);
 							
 							rofs.writeFile(newFile, Buffer.from(txt.replace(new RegExp('\xFE', 'gi'), "\r\n")), { create: true, overwrite: true });
 							vscode.commands.executeCommand("vscode.diff", newFile, uri, basename + " (DATABASE) ↔ " + basename);

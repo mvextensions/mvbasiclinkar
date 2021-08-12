@@ -707,7 +707,8 @@ connection.onReferences(params => {
 		// scan back to the begining of the word
 		while (xpos > 0) {
 			let char = line.substr(xpos, 1);
-			if (" +-*/><".indexOf(char) != -1) {
+			if (" +-*/><=(,".indexOf(char) != -1) {
+				xpos++;
 				break;
 			}
 			xpos--;
@@ -731,6 +732,15 @@ connection.onReferences(params => {
 				break;
 			}
 			if (line.substr(xpos, 1) == ";") {
+				break;
+			}
+			if (line.substr(xpos, 1) == "=") {
+				break;
+			}
+			if (line.substr(xpos, 1) == ",") {
+				break;
+			}
+			if (line.substr(xpos, 1) == ")") {
 				break;
 			}
 			xpos++;
