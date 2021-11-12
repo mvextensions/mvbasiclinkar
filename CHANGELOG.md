@@ -41,3 +41,7 @@
 - "Ignore Identation In Comments" setting added. Allow ignore the indentation of comments by always leaving them at the beginning of the line (Warning: this causes the vscode functionality of collapsing or expanding code regions to malfunction since it is based on indentation) 
 - Fixed a bug when formatting certain combinations of LOOP/UNTIL/REPEAT instructions.
 - Changes in the reference search, now detects better the word to search correcting some erroneous searches.
+
+## 1.0.7
+
+- Fixed Bug with the XMLHttpRequest library as of VSCode version 1.62.1. To install this version or later you must have VSCode 1.62.1 or higher installed.

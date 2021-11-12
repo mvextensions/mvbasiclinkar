@@ -4,7 +4,7 @@
 	"description": "Linkar Extension for MV databases to manage MV Basic programs and data files dictionaries",
 	"author": "Kosday Solutions",
 	"icon": "logo.png",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"license": "MIT",
 	"publisher": "kosdaysolutions",
 	"categories": [
@@ -31,7 +31,7 @@
 		"url": "https://github.com/mvextensions/mvbasiclinkar"
 	},
 	"engines": {
-		"vscode": "^1.43.0"
+		"vscode": "^1.62.1"
 	},
 	"activationEvents": [
 		"onLanguage:mvbasic",

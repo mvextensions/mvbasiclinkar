@@ -2,7 +2,10 @@ XMLHttpRequest.js lin 502
       // Start the other Node Process, executing this string
       var syncProc;
       try{
-        syncProc = spawn(process.argv[0], ["-e", execString]);
+        //OLD VSCODE VERSIONS
+        //syncProc = spawn(process.argv[0], ["-e", execString]);
+        //FOR "vscode": "^1.62.1"
+        syncProc = spawn(process.argv[0], ["--ms-enable-electron-run-as-node","-e", execString]);
       }
       catch{
         var execFile = "tmp-linkar-xmlhttprequest-sync";
