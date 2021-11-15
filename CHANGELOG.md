@@ -45,3 +45,7 @@
 ## 1.0.7
 
 - Fixed Bug with the XMLHttpRequest library as of VSCode version 1.62.1. To install this version or later you must have VSCode 1.62.1 or higher installed.
+
+## 1.0.8
+
+- Applied the same fix as in 1.0.7 to commands that are too large.

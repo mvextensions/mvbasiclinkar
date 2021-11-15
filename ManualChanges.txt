@@ -10,5 +10,8 @@ XMLHttpRequest.js lin 502
       catch{
         var execFile = "tmp-linkar-xmlhttprequest-sync";
         fs.writeFileSync(execFile, execString, "utf8");
-        syncProc = spawn(process.argv[0], [execFile]);
+        //OLD VSCODE VERSIONS
+        //syncProc = spawn(process.argv[0], [execFile]);
+        //FOR "vscode": "^1.62.1"
+        syncProc = spawn(process.argv[0], ["--ms-enable-electron-run-as-node", execFile]);
       }
