@@ -232,7 +232,7 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                         mainSelectClause = "WITH TYPE = \"F\"\"DIR\"";
                         mainSortClause = "BY @ID";
                         break;
-                    case "UnivPerse":
+                    case "Universe":
                         mainFileName = "VOC";
                         //mainSelectClause = "WITH TYPE = \"F\"\"Q\" AND WITH @ID UNLIKE \"....O\"";
                         //mainSelectClause = "WITH TYPE = \"F\"\"Q\" AND WITH @ID UNLIKE \"....O\" AND WITH @ID UNLIKE \"&...\"";

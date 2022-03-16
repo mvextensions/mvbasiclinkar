@@ -49,3 +49,7 @@
 ## 1.0.8
 
 - Applied the same fix as in 1.0.7 to commands that are too large.
+
+## 1.0.9
+
+- Bug fixed when selecting all files in Universe.
