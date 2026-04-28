@@ -28,6 +28,8 @@ export class Connection {
     catalogarg: string;
     terminal: string;
     maxItemsPerFile: number;
+	 useLinkarWS: boolean;
+	 linkarWSApiRes: string;
 
     constructor() {
         this.scheme = "";
@@ -50,6 +52,8 @@ export class Connection {
         this.catalogarg = "LOCAL";
         this.terminal = "";
         this.maxItemsPerFile = 5000;
+		  this.useLinkarWS = false;
+		  this.linkarWSApiRes = "";
     }
 
     public static Clone(originalConnection: Connection): Connection {
@@ -74,6 +78,9 @@ export class Connection {
         conn.catalogarg = originalConnection.catalogarg;
         conn.terminal = originalConnection.terminal;
         conn.maxItemsPerFile = originalConnection.maxItemsPerFile;
+		  conn.useLinkarWS = originalConnection.useLinkarWS;
+		  conn.linkarWSApiRes = originalConnection.linkarWSApiRes;
+		  
         return conn;
     }
 
@@ -90,12 +97,15 @@ export class Connection {
         if (this.ssl)
             protocol = "https";
 
-        return protocol + "://" + this.server + ":" + this.port + "/api/";
+		  if (this.useLinkarWS) {
+				return protocol + "://" + this.server + ":" + this.port + "/api/v1/" + this.linkarWSApiRes + "/sendcommand/";
+		  } else {
+		  		return protocol + "://" + this.server + ":" + this.port + "/api/";
+		  }
     }
 
     public GetInfo(): string {
         var info = "";
-
         info += "Database: " + this.database;
         info += "\r\nServer: " + this.server;
         info += "\r\nPort: " + this.port;
@@ -104,6 +114,11 @@ export class Connection {
         info += "\r\nLoad only Itemids: " + (this.ondemand ? "yes" : "no");
         info += "\r\nIncluded Files: " + (this.files.length > 30 ? (this.files.substring(0, 30) + "...") : this.files);
         info += "\r\nMax. records per file: " + (this.maxItemsPerFile ? this.maxItemsPerFile.toString() : "unlimited");
+        info += "\r\nUse LinkarWS connection: " +(this.useLinkarWS ? "yes" : "no");
+		  if (typeof this.linkarWSApiRes == 'undefined' || !this.linkarWSApiRes) {
+				this.linkarWSApiRes = "";
+		  }
+        info += "\r\nLinarWS Api Resource: " + (this.linkarWSApiRes.length > 30 ? (this.linkarWSApiRes.substring(0, 30) + "...") : this.linkarWSApiRes);
 
         return info;
     }
@@ -177,7 +192,8 @@ export class ConnectionForm {
                                         readconn.ssl != postdata.ssl || readconn.apikey != postdata.apikey ||
                                         readconn.pluginref != postdata.pluginref || readconn.customvars != postdata.customvars ||
                                         readconn.freetext != postdata.freetext || readconn.language != postdata.language ||
-                                        readconn.ondemand != postdata.ondemand || readconn.files != postdata.files || readconn.maxItemsPerFile != postdata.maxItemsPerFile)
+                                        readconn.ondemand != postdata.ondemand || readconn.files != postdata.files || readconn.maxItemsPerFile != postdata.maxItemsPerFile ||
+													 readconn.useLinkarWS != postdata.useLinkarWS || readconn.linkarWSApiRes != postdata.linkarWSApiRes)
                                         needReload = true;
                                     readconn.name = postdata.name;
                                     readconn.database = postdata.database;
@@ -198,6 +214,8 @@ export class ConnectionForm {
                                     readconn.catalogarg = postdata.catalogarg;
                                     readconn.terminal = postdata.terminal;
                                     readconn.maxItemsPerFile = postdata.maxItemsPerFile;
+                                    readconn.useLinkarWS = postdata.useLinkarWS;
+                                    readconn.linkarWSApiRes = postdata.linkarWSApiRes;
                                     confs.update("linkar.connections", conf, vscode.ConfigurationTarget.Global).then(() => {
                                         vscode.commands.executeCommand("fileExplorer.loadConnection", { uri: uri } as LkNode, true, needReload);
                                     });
@@ -212,7 +230,7 @@ export class ConnectionForm {
                         var error = "";
                         var resp = Utilities.requestJson(postdata.name, postdata.GetURL(), postdata.apikey, "getversion", { OUTPUT_FORMAT: "MV" });
                         if (resp && resp.COMMAND) {
-                            var lkdata = new LkData(resp.COMMAND);
+                            var lkdata = new LkData(resp.COMMAND, !postdata.useLinkarWS);
                             error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
                         }
                         else

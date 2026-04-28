@@ -96,7 +96,7 @@ export class FileExplorer {
 				var dataCmd = { STATEMENT: cmd, CUSTOM_VARS: "", OUTPUT_FORMAT: "MV" };
 				var resp = Utilities.requestJson(lkfsp.connection.name, lkfsp.connection.GetURL(), lkfsp.connection.apikey, "execute", dataCmd);
 				if (resp && resp.COMMAND) {
-					var lkdata = new LkData(resp.COMMAND);
+					var lkdata = new LkData(resp.COMMAND, !lkfsp.connection.useLinkarWS);
 					error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
 				}
 				else
@@ -299,7 +299,7 @@ export class FileExplorer {
 					dataSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "False", FILE_NAME: fileName, SELECT_CLAUSE: selectClause, SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: "", PAGINATION: filePagination, PAGE_NUMBER: "1", RECORDS_FOR_PAGE: fileRecPerPage };
 				var respSelect = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "select", dataSelect);
 				if (respSelect && respSelect.COMMAND) {
-					var lkdataSelect = new LkData(respSelect.COMMAND);
+					var lkdataSelect = new LkData(respSelect.COMMAND, !lkFs.connection.useLinkarWS);
 					var errorSelect = lkdataSelect.OutputDataElements.get(LkData.ERRORS_KEY);
 					if (errorSelect)
 						vscode.window.showErrorMessage(errorSelect);
@@ -344,7 +344,7 @@ export class FileExplorer {
 					var dataSelect = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "True", FILE_NAME: fileName, SELECT_CLAUSE: "", SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: "GET.LIST " + list };
 					var respSelect = Utilities.requestJson(lkFs.connection.scheme, lkFs.connection.GetURL(), lkFs.connection.apikey, "select", dataSelect);
 					if (respSelect && respSelect.COMMAND) {
-						var lkdataSelect = new LkData(respSelect.COMMAND);
+						var lkdataSelect = new LkData(respSelect.COMMAND, !lkFs.connection.useLinkarWS);
 						var errorSelect = lkdataSelect.OutputDataElements.get(LkData.ERRORS_KEY);
 						if (errorSelect)
 							vscode.window.showErrorMessage(errorSelect);
@@ -410,7 +410,7 @@ export class FileExplorer {
 					var dataRead = { CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, DICT_CLAUSE: "", RECORDS: dataReadRecs };
 					var resp = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "read", dataRead);
 					if (resp && resp.COMMAND) {
-						var lkdata = new LkData(resp.COMMAND);
+						var lkdata = new LkData(resp.COMMAND, !lkFs.connection.useLinkarWS);
 						var error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
 						if (error) {
 							finalError = error;
@@ -440,7 +440,7 @@ export class FileExplorer {
 					var dataNew = { READ_AFTER: "False", CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", OPTIMISTIC_LOCK: "False", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, RECORDS: dataNewRecs };
 					var resp = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "new", dataNew);
 					if (resp && resp.COMMAND) {
-						var lkdata = new LkData(resp.COMMAND);
+						var lkdata = new LkData(resp.COMMAND, !lkFs.connection.useLinkarWS);
 						var error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
 						if (error) {
 							vscode.window.showErrorMessage(error);
@@ -556,7 +556,7 @@ export class FileExplorer {
 										var dataRead = { CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, DICT_CLAUSE: "", RECORDS: dataReadRecs };										
 										var resp = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "read", dataRead);
 										if (resp && resp.COMMAND) {
-											var lkdataRead = new LkData(resp.COMMAND);
+											var lkdataRead = new LkData(resp.COMMAND, !lkFs.connection.useLinkarWS);
 											newRecord = lkdataRead.OutputDataElements.get(LkData.RECORD_KEY);
 											record = newRecord.replace(new RegExp('\xFE', 'gi'), "\r\n")
 											buffer = Buffer.from(record);
@@ -585,7 +585,7 @@ export class FileExplorer {
 									var dataNew = { READ_AFTER: "False", CALCULATED: "False", DICTIONARIES: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", OPTIMISTIC_LOCK: "False", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: fn, RECORDS: dataNewRecs };									
 									var respWrite = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "new", dataNew);
 									if (respWrite && respWrite.COMMAND) {
-										var lkdata = new LkData(respWrite.COMMAND);
+										var lkdata = new LkData(respWrite.COMMAND, !lkFs.connection.useLinkarWS);
 										var error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
 										if (error) {
 											vscode.window.showErrorMessage(error);
@@ -769,7 +769,7 @@ export class FileExplorer {
 					var resp = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "read", dataRead);
 					if (resp && resp.COMMAND) {
 
-						var lkdata = new LkData(resp.COMMAND);
+						var lkdata = new LkData(resp.COMMAND, !lkFs.connection.useLinkarWS);
 						var error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
 						if (error) {
 							throw vscode.FileSystemError.FileNotFound(error);
@@ -876,7 +876,7 @@ export class FileExplorer {
 		var dataExecute = { STATEMENT: cmd, CUSTOM_VARS: "", OUTPUT_FORMAT: "MV" };
 		var resp = Utilities.requestJson(linkarFs.connection.name, linkarFs.connection.GetURL(), linkarFs.connection.apikey, "execute", dataExecute);
 		if (resp && resp.COMMAND) {
-			var lkdata = new LkData(resp.COMMAND);
+			var lkdata = new LkData(resp.COMMAND, !linkarFs.connection.useLinkarWS);
 			var error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
 			if (error) {
 				vscode.window.showErrorMessage(error);
@@ -902,7 +902,7 @@ export class FileExplorer {
 		var dataExecute = { STATEMENT: cmd, CUSTOM_VARS: "", OUTPUT_FORMAT: "MV" };
 		var resp = Utilities.requestJson(linkarFs.connection.name, linkarFs.connection.GetURL(), linkarFs.connection.apikey, "execute", dataExecute);
 		if (resp && resp.COMMAND) {
-			var lkdata = new LkData(resp.COMMAND);
+			var lkdata = new LkData(resp.COMMAND, !linkarFs.connection.useLinkarWS);
 			var error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
 			if (error) {
 				vscode.window.showErrorMessage(error);

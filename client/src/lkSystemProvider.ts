@@ -140,7 +140,7 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                 var dataList = { ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", ONLY_RECORD_ID: "True", FILE_NAME: "VOC", SELECT_CLAUSE: "", SORT_CLAUSE: "", DICT_CLAUSE: "", PRESELECT_CLAUSE: getListCmd};
 					var respList = Utilities.requestJson(lkFs.connection.scheme, lkFs.connection.GetURL(), lkFs.connection.apikey, "select", dataList);
 					if (respList && respList.COMMAND) {
-						var lkdataList = new LkData(respList.COMMAND);
+						var lkdataList = new LkData(respList.COMMAND, !lkFs.connection.useLinkarWS);
 						var errorList = lkdataList.OutputDataElements.get(LkData.ERRORS_KEY);
 						if (errorList)
 							vscode.window.showErrorMessage(errorList);
@@ -170,7 +170,7 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                     var respSelect = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "select", dataSelect);
                     if (respSelect && respSelect.COMMAND) {
                         lkFs.createDirectory(vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + fileName + "/"));
-                        var lkdataSelect = new LkData(respSelect.COMMAND);
+                        var lkdataSelect = new LkData(respSelect.COMMAND, !lkFs.connection.useLinkarWS);
                         var errorSelect = lkdataSelect.OutputDataElements.get(LkData.ERRORS_KEY);
                         if (errorSelect)
                             vscode.window.showErrorMessage(errorSelect);
@@ -259,7 +259,7 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                 mainResponse = Utilities.requestJson(lkFs.connection.name, lkFs.connection.GetURL(), lkFs.connection.apikey, "select", dataDBSelect);
             }
             if (mainResponse && mainResponse.COMMAND) {
-                var lkdataDB = new LkData(mainResponse.COMMAND);
+                var lkdataDB = new LkData(mainResponse.COMMAND, !lkFs.connection.useLinkarWS);
                 var errorDB = lkdataDB.OutputDataElements.get(LkData.ERRORS_KEY);
                 if (errorDB) {
                     vscode.window.showErrorMessage(errorDB);
@@ -280,7 +280,7 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                         if (respSelect && respSelect.COMMAND) {
                             var dirUri = vscode.Uri.parse(lkFs.connection.scheme + ":/" + lkFs.connection.name + "/" + itfileName + "/");
                             lkFs.createDirectory(dirUri);
-                            var lkdataSelect = new LkData(respSelect.COMMAND);
+                            var lkdataSelect = new LkData(respSelect.COMMAND, !lkFs.connection.useLinkarWS);
                             var errorSelect = lkdataSelect.OutputDataElements.get(LkData.ERRORS_KEY);
                             if (errorSelect)
                                 vscode.window.showErrorMessage(errorSelect);
@@ -403,7 +403,7 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
             var dataRead = { CALCULATED: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", CUSTOM_VARS: "", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, DICT_CLAUSE: "", RECORDS: dataReadRecs };
             var resp = Utilities.requestJson(this.connection.name, this.connection.GetURL(), this.connection.apikey, "read", dataRead);
             if (resp && resp.COMMAND) {
-                var lkdata = new LkData(resp.COMMAND);
+                var lkdata = new LkData(resp.COMMAND, !this.connection.useLinkarWS);
                 var error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
                 if (error) {
                     throw vscode.FileSystemError.FileNotFound(error);
@@ -458,7 +458,7 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                 var dataNew = { READ_AFTER: "True", CALCULATED: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", OPTIMISTIC_LOCK: "True", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, RECORDS: dataNewRecs };
                 var resp = Utilities.requestJson(this.connection.name, this.connection.GetURL(), this.connection.apikey, "new", dataNew);
                 if (resp && resp.COMMAND) {
-                    lkdata = new LkData(resp.COMMAND);
+                    lkdata = new LkData(resp.COMMAND, !this.connection.useLinkarWS);
                     error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
                 }
                 else
@@ -494,7 +494,7 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                 var dataWrite = { READ_AFTER: "True", CALCULATED: "False", CONVERSION: "False", FORMAT_SPEC: "False", ORIGINAL_RECORDS: "False", OPTIMISTIC_LOCK: "True", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: parent.name, RECORDS: dataWriteRecs };
                 var resp = Utilities.requestJson(this.connection.name, this.connection.GetURL(), this.connection.apikey, "update", dataWrite);
                 if (resp && resp.COMMAND) {
-                    lkdata = new LkData(resp.COMMAND);
+                    lkdata = new LkData(resp.COMMAND, !this.connection.useLinkarWS);
                     error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
                     if (error)
                         updateError = true;
@@ -587,7 +587,7 @@ export class LkFileSystemProvider implements vscode.FileSystemProvider {
                 var resp = Utilities.requestJson(this.connection.name, this.connection.GetURL(), this.connection.apikey, "delete", dataDelete);
 
                 if (resp && resp.COMMAND) {
-                    var lkdata = new LkData(resp.COMMAND);
+                    var lkdata = new LkData(resp.COMMAND, !this.connection.useLinkarWS);
                     error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
                     if (!error)
                         vscode.window.showInformationMessage(uri.fsPath + " DELETED");

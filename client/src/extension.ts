@@ -123,8 +123,8 @@ export function activate(context: ExtensionContext) {
 			// regex for statements that start a block
 			var edits: vscode.TextEdit[] = []
 
-			if (formattingEnabled) {
-				let rBlockStart = new RegExp("^(begin case$|lock |key\\(|if |evaluate |commit |rollback |readnext |open |write |writeu |writev |writevu |read |readv |readu |readt |readvu |matreadu |locate |locate\\(|openseq |matread |create |readlist |openpath |find |findstr |bscan)", "i")
+			if (formattingEnabled) {				
+				let rBlockStart = new RegExp("^(begin case$|lock |key\\(|if |evaluate |commit |rollback |readnext |open |write |writeu |writev |writevu |writeseq |writecsv |read |readv |readu |readseq |readcsv |readt |readvu |matreadu |locate |locate\\(|openseq |matread |create |readlist |openpath |find |findstr |bscan)", "i");
 				let rBlockAlways = new RegExp("^(for |try|loop( |$))", "i")
 				let rBlockContinue = new RegExp(" (then|else|case|on error|locked)$", "i")
 				let rBlockEnd = new RegExp("^(end|end case|next|next\\s+.+|repeat)$", "i")

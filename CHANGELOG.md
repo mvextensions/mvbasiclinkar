@@ -53,3 +53,17 @@
 ## 1.0.9
 
 - Bug fixed when selecting all files in Universe.
+
+## 1.1.1
+
+- Added new statements to solve indentation problems in MV languages.
+
+## 1.2.0
+
+- Fixed a bug that prevented the extension from stablishing connections in VsCode versions that use Electron version 29 and above.
+- Fixed a bug that prevented the dictionaries page from loading properly when targeting a minimum VsCode version above 1.58.1.
+- Fixed an issue in the "Edit connection" page that made the view invisible after clicking a button.
+- Added a new feature that allows connections to be made using LinkarWS instead of Linkar Rest Api:
+	- Added 'Use LinkarWS' option to "Edit connection" page: Checking this option will attempt to make the connection through LinkarWS.
+	- Added 'LinkarWS ApiResource' option to "Edit connection" page: Checking the above option will make this option required, set a valid ApiResource in order to connect to LinkarWS.
+	- LinkarWS version 2.0.1 or above is required for this feature.

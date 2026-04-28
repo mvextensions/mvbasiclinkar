@@ -22,9 +22,13 @@ export class LkData {
   OutputDataElements: Map<string, string> = new Map<string, string>();
   ThisList: string[] = [];
 
-  constructor(outputData: string) {
+  constructor(outputData: string, isB64: boolean) {
     if (outputData) {
-      this.OutputData = Buffer.from(outputData, 'base64').toString()
+		if (isB64 == null || isB64 == true) {
+      	this.OutputData = Buffer.from(outputData, 'base64').toString()
+		} else {
+			this.OutputData = outputData;
+		}
       var parts = this.OutputData.split("\x1C");
       if (parts.length >= 1) {
         this.ThisList = parts[0].split('\xFE');

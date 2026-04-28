@@ -2496,7 +2496,7 @@ export class DictionariesForm {
         var dataCmd = { FILE_NAME: fileName, CUSTOM_VARS: "", OUTPUT_FORMAT: "MV" };
         var resp = Utilities.requestJson(this.connection.name, this.connection.GetURL(), this.connection.apikey, "dictionaries", dataCmd);
         if (resp && resp.COMMAND) {
-            var lkdata = new LkData(resp.COMMAND);
+            var lkdata = new LkData(resp.COMMAND, !this.connection.useLinkarWS);
             error = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
         }
         else
@@ -3319,7 +3319,7 @@ export class DictionariesForm {
             var deleteCmd = { OPTIMISTIC_LOCK: "False", RECOVER_RECORD_ID_TYPE: "NONE", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: "DICT " + filedata.fileName, RECORDS: deletedBuffer };
             var resp = Utilities.requestJson(this.connection.name, this.connection.GetURL(), this.connection.apikey, "delete", deleteCmd);
             if (resp && resp.COMMAND) {
-                var lkdata = new LkData(resp.COMMAND);
+                var lkdata = new LkData(resp.COMMAND, !this.connection.useLinkarWS);
                 var err = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
                 if (err)
                     error += err + "\r\n";
@@ -3334,7 +3334,7 @@ export class DictionariesForm {
             var newCmd = { NEW_RECORD_ID_TYPE: "NONE", CUSTOM_VARS: "", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: "DICT " + filedata.fileName, RECORDS: newBuffer };
             var resp = Utilities.requestJson(this.connection.name, this.connection.GetURL(), this.connection.apikey, "new", newCmd);
             if (resp && resp.COMMAND) {
-                var lkdata = new LkData(resp.COMMAND);
+                var lkdata = new LkData(resp.COMMAND, !this.connection.useLinkarWS);
                 var err = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
                 if (err)
                     error += err + "\r\n";
@@ -3349,7 +3349,7 @@ export class DictionariesForm {
             var updateCmd = { OPTIMISTIC_LOCK: "False", INPUT_FORMAT: "MV", OUTPUT_FORMAT: "MV", FILE_NAME: "DICT " + filedata.fileName, RECORDS: updatedBuffer };
             var resp = Utilities.requestJson(this.connection.name, this.connection.GetURL(), this.connection.apikey, "update", updateCmd);
             if (resp && resp.COMMAND) {
-                var lkdata = new LkData(resp.COMMAND);
+                var lkdata = new LkData(resp.COMMAND, !this.connection.useLinkarWS);
                 var err = lkdata.OutputDataElements.get(LkData.ERRORS_KEY);
                 if (err)
                     error += err + "\r\n";
