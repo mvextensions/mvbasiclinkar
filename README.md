@@ -19,6 +19,7 @@ This document describes how to install and use the MV Basic Linkar extension in 
 	* Linkar Server.
 	* Linkar Manager.
 	* Linkar REST API.
+	* Linkar Web Services
 * MV Basic Linkar refers to the Linkar Visual Studio Code extension.
 
 ## Content table
@@ -79,15 +80,15 @@ The following environment is required in order to use the extension.
 * Windows, Linux or Mac OSX machine.
 * VS Code
 * An understanding of Linkar terminology and configuration, and a working installation. (http://kosday.com/Manuals/en_WEB_LINKAR)
-* Access from the machine to a Linkar REST API server with API keys (The Linkar REST API server can be in any Linux, Windows or macOS machine). Linkar version 2.1 and above.
+* Access from the machine to a Linkar REST API or Linkar Web Services server with API keys (The Linkar REST API or Linkar Web Services server can be in any Linux, Windows or macOS machine). Linkar version 2.1 and above.
 
-It is not necessary to have a Linkar REST API key for each VS Code instance or developer. Just one Linkar Server is enough to support all programmers to all required systems. You need at least 1 Linkar PRO license (Linkar REST API does not work with LITE licenses) You can ask for an evaluation license on our web (https://kosday.com/free-trial/). 1 Linkar Pro license, with one on-demand defined connection to the database can serve all programmers, and using only 1 database license when required.
+It is not necessary to have a Linkar REST API or Linkar Web Services key for each VS Code instance or developer. Just one Linkar Server is enough to support all programmers to all required systems. You need at least 1 Linkar PRO license (Linkar REST API or Linkar Web Services does not work with LITE licenses) You can ask for an evaluation license on our web (https://kosday.com/free-trial/). 1 Linkar Pro license, with one on-demand defined connection to the database can serve all programmers, and using only 1 database license when required.
 
-You can have as many Linkar REST API keys as you need, pointing to the same Profile/EntryPoint (MV Database/Account) or to different ones (different MV databases, different accounts, different developers, etc.) Kosday recommends having at least 1 PRO license for each EntryPoint you will use. For instance, if you have 3 Linkar REST API keys in the same EntryPoint (same MV database/ Account), usually 1 Linkar PRO license, with 1 on demand session defined in the EntryPoint should be enough, even when you can add more for better performance. But if you have 2 Linkar REST API keys, defined in 2 different EntryPoints (2 MV databases or 2 different accounts in the same database) you will have better performance using 2 Linkar PRO licenses with one on-demand database session in each one.
+You can have as many Linkar REST API or Linkar Web Services keys as you need, pointing to the same Profile/EntryPoint (MV Database/Account) or to different ones (different MV databases, different accounts, different developers, etc.) Kosday recommends having at least 1 PRO license for each EntryPoint you will use. For instance, if you have 3 Linkar REST API or Linkar Web Services keys in the same EntryPoint (same MV database/ Account), usually 1 Linkar PRO license, with 1 on demand session defined in the EntryPoint should be enough, even when you can add more for better performance. But if you have 2 Linkar REST API or Linkar Web Services keys, defined in 2 different EntryPoints (2 MV databases or 2 different accounts in the same database) you will have better performance using 2 Linkar PRO licenses with one on-demand database session in each one.
 
 As always, you can configure the Linkar EntryPoints in many different ways to obtain the best performance. Each individual case will be different. Kosday can help with all Linkar details. Also, remember you can change the configuration in seconds, and many times even with the Linkar Server started.
 
-Kosday also recommends that you install Linkar Suite in a different machine than the one you use with VS Code to develop. You can install it in Windows, Linux or macOS. The reason is that the architecture is designed to work with many developers, so the Linkar REST API server will be used by many people. Usually your development machine, where you run VS Code, is for one developer who can stop and start it at any time. It is preferable to install Linkar Suite in one of your organization servers so the Linkar REST API server will be running 24 hours a day / 7 days a week. This is not for resources; Linkar Suite can run even in a Raspberry Pi. It is much more a security matter. Imagine you have programmers working remotely or that you have contract programmers in any part of the world, you can give them access only to the machine that runs the Linkar REST API and in the TCP port defined for it, using a Linkar user with minimum privileges  in the API Key you generate for them. They can work with VS Code perfectly (the only limit will be the terminal access to the database for debugging.
+Kosday also recommends that you install Linkar Suite in a different machine than the one you use with VS Code to develop. You can install it in Windows, Linux or macOS. The reason is that the architecture is designed to work with many developers, so the Linkar REST API or Linkar Web Services server will be used by many people. Usually your development machine, where you run VS Code, is for one developer who can stop and start it at any time. It is preferable to install Linkar Suite in one of your organization servers so the Linkar REST API or Linkar Web Services server will be running 24 hours a day / 7 days a week. This is not for resources; Linkar Suite can run even in a Raspberry Pi. It is much more a security matter. Imagine you have programmers working remotely or that you have contract programmers in any part of the world, you can give them access only to the machine that runs the Linkar REST API or Linkar Web Services and in the TCP port defined for it, using a Linkar user with minimum privileges  in the API Key you generate for them. They can work with VS Code perfectly (the only limit will be the terminal access to the database for debugging.
 
 ## 3. Installing VS Code
 
@@ -113,9 +114,13 @@ You can create as many connections as you need. MV Basic Linkar extension allows
 
 **Database type**: Type of the database (D3, jBase, mvBASE, QM, Universe, Unidata)
 
-**Server**: URL of the Web Server of Linkar Suite where the Linkar REST API server is installed.
+**Use LinkarWS connection**: Checking this will connect through Linkar Web Services instead of Linkar REST API.
 
-**Port**: TCP Port of the Web Server of Linkar Suite where the Linkar REST API server is installed (usually 11201).
+**LinkarWS ApiResource**: Required if checking the option above. Set a valid Linkar Web Services ApiResource to allow connections.
+
+**Server**: URL of the Web Server of Linkar Suite where the Linkar REST API or Linkar Web Services server is installed.
+
+**Port**: TCP Port of the Web Server of Linkar Suite where the Linkar REST API or Linkar Web Services server is installed (usually 11201).
 
 **SSL**: You must activate this if Linkar is using SSL.
 
