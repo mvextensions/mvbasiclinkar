@@ -1,8 +1,0 @@
-Thank you for reaching out.
-To help us verify that you are the rightful owner of the publisher account, could you please make a dummy commit that explicitly mentions we requested it for ownership verification?
-This step is required to confirm access and prevent any unauthorized changes.
-Once the commit is completed, please share the relevant details with us so we can review and proceed further.
-Thank you for your understanding and cooperation.
-Regards,
-VS Marketplace Support Team
-(Representative: 733be9c8)
